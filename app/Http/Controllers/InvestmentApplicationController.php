@@ -17,7 +17,9 @@ class InvestmentApplicationController extends Controller
      */
     public function create()
     {
-        return view('investment-application');
+                $company = Company::first();
+
+        return view('investment-application',compact('company'));
     }
 
     /**

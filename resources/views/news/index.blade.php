@@ -10,8 +10,14 @@
 @endphp
 
 <!-- Page Header -->
-<section class="page-header bg-gradient-to-r from-green-800 via-gray-900 to-green-700 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<section class="page-header relative bg-gradient-investment text-white overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+         style="background-image: url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+    </div>
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-green-900/90 via-gray-900/80 to-green-800/90"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="mb-8">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6">
                 <i class="fas fa-newspaper text-3xl text-white"></i>

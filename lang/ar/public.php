@@ -4,6 +4,7 @@ return [
     // Navigation
     'home' => 'الرئيسية',
     'about' => 'من نحن',
+    'investment-mechanism' => 'آلية الإستثمار',
     'contact' => 'تواصل معنا',
     'investment_application' => 'طلب استثمار',
     'language' => 'اللغة',

@@ -250,6 +250,40 @@
         </div>
     </div>
 
+    <!-- Page Visibility Settings -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 flex items-center">
+                <i class="fas fa-eye mr-3 text-purple-500"></i>
+                {{ __('admin.page_visibility_settings') }}
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ __('admin.control_page_visibility') }}</p>
+        </div>
+        <div class="p-6">
+            <div class="space-y-4">
+                <!-- News Page Toggle -->
+                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <div class="flex-1">
+                        <label for="news_page_enabled" class="block text-sm font-medium text-gray-900 dark:text-gray-100">
+                            {{ __('admin.news_page') }}
+                        </label>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            {{ __('admin.news_page_description') }}
+                        </p>
+                    </div>
+                    <div class="ml-4">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" name="news_page_enabled" id="news_page_enabled" value="1"
+                                   {{ old('news_page_enabled', $settings['pages']['news_page_enabled']) ? 'checked' : '' }}
+                                   class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- SEO Settings -->
     <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -360,64 +394,64 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- المستثمرين -->
                 <div>
-                    <label for="years_experience" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label for="investors_count" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         <i class="fas fa-users text-green-500 mr-2"></i>{{ app()->getLocale() === 'ar' ? 'المستثمرين' : 'Investors' }}
                     </label>
                     <input type="text"
-                           id="years_experience"
-                           name="years_experience"
-                           value="{{ old('years_experience', $settings['statistics']['years_experience'] ?? '1500+') }}"
+                           id="investors_count"
+                           name="investors_count"
+                           value="{{ old('investors_count', $settings['statistics']['investors_count'] ?? '1000') }}"
                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                           placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: 1500+' : 'Example: 1500+' }}">
-                    @error('years_experience')
+                           placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: 1000' : 'Example: 1000' }}">
+                    @error('investors_count')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- الأسهم المباعة -->
                 <div>
-                    <label for="assets_under_management" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label for="sold_shares" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         <i class="fas fa-chart-line text-green-500 mr-2"></i>{{ app()->getLocale() === 'ar' ? 'الأسهم المباعة' : 'Shares Sold' }}
                     </label>
                     <input type="text"
-                           id="assets_under_management"
-                           name="assets_under_management"
-                           value="{{ old('assets_under_management', $settings['statistics']['assets_under_management'] ?? '75,000') }}"
+                           id="sold_shares"
+                           name="sold_shares"
+                           value="{{ old('sold_shares', $settings['statistics']['sold_shares'] ?? '50000') }}"
                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                           placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: 75,000' : 'Example: 75,000' }}">
-                    @error('assets_under_management')
+                           placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: 50000' : 'Example: 50000' }}">
+                    @error('sold_shares')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- الأسهم المطروحة للبيع -->
+                <!-- الأسهم المتاحة -->
                 <div>
-                    <label for="satisfied_clients" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-store text-green-500 mr-2"></i>{{ app()->getLocale() === 'ar' ? 'الأسهم المطروحة للبيع' : 'Shares Available' }}
+                    <label for="available_shares" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-coins text-green-500 mr-2"></i>{{ app()->getLocale() === 'ar' ? 'الأسهم المتاحة' : 'Available Shares' }}
                     </label>
                     <input type="text"
-                           id="satisfied_clients"
-                           name="satisfied_clients"
-                           value="{{ old('satisfied_clients', $settings['statistics']['satisfied_clients'] ?? '100,000') }}"
+                           id="available_shares"
+                           name="available_shares"
+                           value="{{ old('available_shares', $settings['statistics']['available_shares'] ?? '25000') }}"
                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                           placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: 100,000' : 'Example: 100,000' }}">
-                    @error('satisfied_clients')
+                           placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: 25000' : 'Example: 25000' }}">
+                    @error('available_shares')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- قيمة الشركة الحالية -->
+                <!-- قيمة الشركة -->
                 <div>
-                    <label for="average_return" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-building text-green-500 mr-2"></i>{{ app()->getLocale() === 'ar' ? 'قيمة الشركة الحالية' : 'Current Company Value' }}
+                    <label for="company_value" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-dollar-sign text-green-500 mr-2"></i>{{ app()->getLocale() === 'ar' ? 'قيمة الشركة' : 'Company Value' }}
                     </label>
                     <input type="text"
-                           id="average_return"
-                           name="average_return"
-                           value="{{ old('average_return', $settings['statistics']['average_return'] ?? '12.5M SAR') }}"
+                           id="company_value"
+                           name="company_value"
+                           value="{{ old('company_value', $settings['statistics']['company_value'] ?? '500M') }}"
                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                           placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: 12.5M SAR' : 'Example: 12.5M SAR' }}">
-                    @error('average_return')
+                           placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: 500M' : 'Example: 500M' }}">
+                    @error('company_value')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
@@ -490,6 +524,188 @@
                         </option>
                     </select>
                     @error('currency')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section Settings -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 flex items-center">
+                <i class="fas fa-home mr-3 text-blue-500"></i>
+                {{ __('Hero Section Settings') }}
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                {{ __('Manage hero section texts and buttons') }}
+            </p>
+        </div>
+        <div class="p-6 space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Hero Title -->
+                <div>
+                    <label for="hero_title_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Hero Title (Arabic)') }}
+                    </label>
+                    <input type="text" name="hero_title_ar" id="hero_title_ar"
+                           value="{{ old('hero_title_ar', $settings['hero']['hero_title_ar']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('hero_title_ar')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="hero_title_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Hero Title (English)') }}
+                    </label>
+                    <input type="text" name="hero_title_en" id="hero_title_en"
+                           value="{{ old('hero_title_en', $settings['hero']['hero_title_en']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('hero_title_en')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Start Button -->
+                <div>
+                    <label for="hero_button_start_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Start Button (Arabic)') }}
+                    </label>
+                    <input type="text" name="hero_button_start_ar" id="hero_button_start_ar"
+                           value="{{ old('hero_button_start_ar', $settings['hero']['hero_button_start_ar']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('hero_button_start_ar')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="hero_button_start_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Start Button (English)') }}
+                    </label>
+                    <input type="text" name="hero_button_start_en" id="hero_button_start_en"
+                           value="{{ old('hero_button_start_en', $settings['hero']['hero_button_start_en']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('hero_button_start_en')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Learn More Button -->
+                <div>
+                    <label for="hero_button_learn_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Learn More Button (Arabic)') }}
+                    </label>
+                    <input type="text" name="hero_button_learn_ar" id="hero_button_learn_ar"
+                           value="{{ old('hero_button_learn_ar', $settings['hero']['hero_button_learn_ar']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('hero_button_learn_ar')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="hero_button_learn_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Learn More Button (English)') }}
+                    </label>
+                    <input type="text" name="hero_button_learn_en" id="hero_button_learn_en"
+                           value="{{ old('hero_button_learn_en', $settings['hero']['hero_button_learn_en']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('hero_button_learn_en')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Share Price Title -->
+                <div>
+                    <label for="hero_share_price_title_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Share Price Title (Arabic)') }}
+                    </label>
+                    <input type="text" name="hero_share_price_title_ar" id="hero_share_price_title_ar"
+                           value="{{ old('hero_share_price_title_ar', $settings['hero']['hero_share_price_title_ar']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('hero_share_price_title_ar')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="hero_share_price_title_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Share Price Title (English)') }}
+                    </label>
+                    <input type="text" name="hero_share_price_title_en" id="hero_share_price_title_en"
+                           value="{{ old('hero_share_price_title_en', $settings['hero']['hero_share_price_title_en']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('hero_share_price_title_en')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Section Settings -->
+    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 flex items-center">
+                <i class="fas fa-chart-bar mr-3 text-green-500"></i>
+                {{ __('Statistics Section Settings') }}
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                {{ __('Manage statistics section titles and descriptions') }}
+            </p>
+        </div>
+        <div class="p-6 space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Stats Title -->
+                <div>
+                    <label for="stats_title_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Statistics Title (Arabic)') }}
+                    </label>
+                    <input type="text" name="stats_title_ar" id="stats_title_ar"
+                           value="{{ old('stats_title_ar', $settings['stats']['stats_title_ar']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('stats_title_ar')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="stats_title_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Statistics Title (English)') }}
+                    </label>
+                    <input type="text" name="stats_title_en" id="stats_title_en"
+                           value="{{ old('stats_title_en', $settings['stats']['stats_title_en']) }}"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                    @error('stats_title_en')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Stats Subtitle -->
+                <div>
+                    <label for="stats_subtitle_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Statistics Subtitle (Arabic)') }}
+                    </label>
+                    <textarea name="stats_subtitle_ar" id="stats_subtitle_ar" rows="3"
+                              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">{{ old('stats_subtitle_ar', $settings['stats']['stats_subtitle_ar']) }}</textarea>
+                    @error('stats_subtitle_ar')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div>
+                    <label for="stats_subtitle_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {{ __('Statistics Subtitle (English)') }}
+                    </label>
+                    <textarea name="stats_subtitle_en" id="stats_subtitle_en" rows="3"
+                              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">{{ old('stats_subtitle_en', $settings['stats']['stats_subtitle_en']) }}</textarea>
+                    @error('stats_subtitle_en')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>

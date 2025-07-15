@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', app()->getLocale() === 'ar' ? 'عن الشركة' : 'About Us')
-@section('description', app()->getLocale() === 'ar' ? 'تعرف على شركة الجودة للاستثمار ورؤيتنا ورسالتنا وفريق الإدارة' : 'Learn about Quality Investment Company, our vision, mission, and management team')
+@section('title', $siteSettings['about_page_title_' . app()->getLocale()] ?? ($company ? $company->getLocalizedName() : (app()->getLocale() === 'ar' ? 'عن الشركة' : 'About Us')))
+@section('description', $siteSettings['about_page_subtitle_' . app()->getLocale()] ?? ($company ? $company->getLocalizedAbout() : (app()->getLocale() === 'ar' ? 'تعرف على شركة الجودة للاستثمار ورؤيتنا ورسالتنا وفريق الإدارة' : 'Learn about Quality Investment Company, our vision, mission, and management team')))
 
 @push('styles')
 <style>
@@ -296,20 +296,27 @@
     $boardMembers = collect(); // Temporary fix - will be replaced when BoardMember model is created
 @endphp
 
+
 <!-- Page Header -->
-<section class="page-header bg-gradient-to-r from-green-800 via-gray-900 to-green-700 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<section class="page-header relative bg-gradient-investment text-white overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+         style="background-image: url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
+    </div>
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-green-900/90 via-gray-900/80 to-green-800/90"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div class="mb-8">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6">
                 <i class="fas fa-building text-3xl text-white"></i>
             </div>
             <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                {{ app()->getLocale() === 'ar' ? 'عن الشركة' : 'About Us' }}
+                {{ $siteSettings['about_page_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'عن الشركة' : 'About Us') }}
             </h1>
             <p class="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto">
-                {{ app()->getLocale() === 'ar'
+                {{ $siteSettings['about_page_subtitle_' . app()->getLocale()] ?? (app()->getLocale() === 'ar'
                     ? 'تعرف على قصتنا ورؤيتنا في عالم الاستثمار والنمو المستدام'
-                    : 'Discover our story and vision in the world of investment and sustainable growth'
+                    : 'Discover our story and vision in the world of investment and sustainable growth')
                 }}
             </p>
         </div>
@@ -322,13 +329,11 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
                 <h2 class="text-4xl font-bold text-gray-900 mb-6">
-                    {{ app()->getLocale() === 'ar' ? 'من نحن' : 'Who We Are' }}
+                    {{ $siteSettings['who_we_are_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'من نحن' : 'Who We Are') }}
                 </h2>
                 <div class="prose prose-lg text-gray-600 space-y-6">
-                    @if($company && $company->about_ar && app()->getLocale() === 'ar')
-                        {!! nl2br(e($company->about_ar)) !!}
-                    @elseif($company && $company->about_en && app()->getLocale() === 'en')
-                        {!! nl2br(e($company->about_en)) !!}
+                    @if($company && $company->getLocalizedAbout())
+                        {!! $company->getLocalizedAbout() !!}
                     @else
                         <p>
                             {{ app()->getLocale() === 'ar'
@@ -394,10 +399,8 @@
                     </h3>
                 </div>
                 <p class="text-gray-600 leading-relaxed">
-                    @if($company && $company->vision_ar && app()->getLocale() === 'ar')
-                        {{ $company->vision_ar }}
-                    @elseif($company && $company->vision_en && app()->getLocale() === 'en')
-                        {{ $company->vision_en }}
+                    @if($company && $company->getLocalizedVision())
+                        {{ $company->getLocalizedVision() }}
                     @else
                         {{ app()->getLocale() === 'ar'
                             ? 'أن نكون الشركة الرائدة في مجال الاستثمار في المنطقة، ونقدم حلولاً استثمارية مبتكرة تحقق أعلى العوائد مع إدارة المخاطر بفعالية.'
@@ -418,10 +421,8 @@
                     </h3>
                 </div>
                 <p class="text-gray-600 leading-relaxed">
-                    @if($company && $company->mission_ar && app()->getLocale() === 'ar')
-                        {{ $company->mission_ar }}
-                    @elseif($company && $company->mission_en && app()->getLocale() === 'en')
-                        {{ $company->mission_en }}
+                    @if($company && $company->getLocalizedMission())
+                        {{ $company->getLocalizedMission() }}
                     @else
                         {{ app()->getLocale() === 'ar'
                             ? 'تقديم خدمات استثمارية متميزة ومبتكرة لعملائنا، مع الالتزام بأعلى معايير الشفافية والمهنية، لتحقيق أهدافهم المالية وبناء ثقة طويلة الأمد.'

@@ -4,6 +4,7 @@ return [
     // Navigation
     'home' => 'Home',
     'about' => 'About Us',
+    'investment-mechanism' => 'Investment Mechanism',
     'contact' => 'Contact',
     'investment_application' => 'Investment Application',
     'language' => 'Language',

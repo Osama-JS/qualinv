@@ -57,6 +57,7 @@ class CompanyController extends Controller
             'address' => 'nullable|string|max:500',
             'website' => 'nullable|url|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'favicon' => 'nullable|file|mimes:ico,png|max:1024',
         ]);
 
         $company = Company::first();
@@ -73,6 +74,17 @@ class CompanyController extends Controller
 
             $logoPath = $request->file('logo')->store('company', 'public');
             $company->logo = $logoPath;
+        }
+
+        // Handle favicon upload
+        if ($request->hasFile('favicon')) {
+            // Delete old favicon if exists
+            if ($company->favicon && Storage::disk('public')->exists($company->favicon)) {
+                Storage::disk('public')->delete($company->favicon);
+            }
+
+            $faviconPath = $request->file('favicon')->store('company', 'public');
+            $company->favicon = $faviconPath;
         }
 
         // Prepare multilingual data

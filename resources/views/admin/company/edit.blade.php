@@ -75,6 +75,28 @@
                 @enderror
             </div>
 
+            <!-- Company Favicon -->
+            <div>
+                <label for="favicon" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {{ __('admin.company_favicon') }}
+                </label>
+                @if($company->favicon)
+                    <div class="mb-4 flex items-center space-x-3">
+                        <img src="{{ Storage::url($company->favicon) }}" alt="Current Favicon" class="h-8 w-8 object-contain">
+                        <div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">{{ __('admin.current_favicon') }}</p>
+                            <p class="text-xs text-gray-500">{{ basename($company->favicon) }}</p>
+                        </div>
+                    </div>
+                @endif
+                <input type="file" name="favicon" id="favicon" accept=".ico,.png"
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
+                <p class="mt-1 text-sm text-gray-500">{{ __('admin.favicon_help_text') }}</p>
+                @error('favicon')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
             <!-- Contact Information -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
@@ -281,63 +303,108 @@
 @endsection
 
 @push('scripts')
-<!-- TinyMCE Professional Editor -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- Quill Rich Text Editor -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize TinyMCE for English fields (LTR)
-    tinymce.init({
-        selector: '.tinymce-editor',
-        height: 400,
-        menubar: false,
-        plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'directionality'
-        ],
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | ' +
-                'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
-                'forecolor backcolor | link image media table | code fullscreen help',
-        directionality: 'ltr',
-        language: 'en',
-        content_style: 'body { font-family: Inter, sans-serif; font-size: 14px; line-height: 1.6; }',
-        branding: false,
-        promotion: false,
-        setup: function(editor) {
-            editor.on('change', function() {
-                editor.save();
-            });
-        }
+    // Initialize Quill editors
+    const quillEditors = {};
+
+    // English editors (LTR)
+    document.querySelectorAll('.tinymce-editor').forEach(function(element) {
+        const editorId = element.id;
+        const hiddenInput = element;
+
+        // Create editor container
+        const editorContainer = document.createElement('div');
+        editorContainer.id = editorId + '_editor';
+        editorContainer.style.height = '300px';
+        hiddenInput.style.display = 'none';
+        hiddenInput.parentNode.insertBefore(editorContainer, hiddenInput);
+
+        // Initialize Quill
+        const quill = new Quill('#' + editorId + '_editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    ['link', 'blockquote', 'code-block'],
+                    ['clean']
+                ]
+            },
+            placeholder: 'Enter content...'
+        });
+
+        // Set initial content
+        quill.root.innerHTML = hiddenInput.value;
+
+        // Update hidden input on content change
+        quill.on('text-change', function() {
+            hiddenInput.value = quill.root.innerHTML;
+        });
+
+        quillEditors[editorId] = quill;
     });
 
-    // Initialize TinyMCE for Arabic fields (RTL)
-    tinymce.init({
-        selector: '.tinymce-editor-rtl',
-        height: 400,
-        menubar: false,
-        plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'directionality'
-        ],
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | ' +
-                'alignright aligncenter alignleft alignjustify | bullist numlist outdent indent | ' +
-                'forecolor backcolor | link image media table | ltr rtl | code fullscreen help',
-        directionality: 'rtl',
-        language: 'ar',
-        content_style: 'body { font-family: Tajawal, sans-serif; font-size: 16px; line-height: 1.8; direction: rtl; text-align: right; }',
-        branding: false,
-        promotion: false,
-        setup: function(editor) {
-            editor.on('change', function() {
-                editor.save();
-            });
-        }
+    // Arabic editors (RTL)
+    document.querySelectorAll('.tinymce-editor-rtl').forEach(function(element) {
+        const editorId = element.id;
+        const hiddenInput = element;
+
+        // Create editor container
+        const editorContainer = document.createElement('div');
+        editorContainer.id = editorId + '_editor';
+        editorContainer.style.height = '300px';
+        editorContainer.style.direction = 'rtl';
+        editorContainer.style.textAlign = 'right';
+        hiddenInput.style.display = 'none';
+        hiddenInput.parentNode.insertBefore(editorContainer, hiddenInput);
+
+        // Initialize Quill
+        const quill = new Quill('#' + editorId + '_editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    ['link', 'blockquote', 'code-block'],
+                    ['clean']
+                ]
+            },
+            placeholder: 'أدخل المحتوى...'
+        });
+
+        // Set initial content
+        quill.root.innerHTML = hiddenInput.value;
+        quill.root.style.direction = 'rtl';
+        quill.root.style.textAlign = 'right';
+
+        // Update hidden input on content change
+        quill.on('text-change', function() {
+            hiddenInput.value = quill.root.innerHTML;
+        });
+
+        quillEditors[editorId] = quill;
     });
 
     // Form submission handling
     document.querySelector('form').addEventListener('submit', function(e) {
-        tinymce.triggerSave();
+        // Update all hidden inputs before submission
+        Object.keys(quillEditors).forEach(function(editorId) {
+            const quill = quillEditors[editorId];
+            const hiddenInput = document.getElementById(editorId);
+            hiddenInput.value = quill.root.innerHTML;
+        });
     });
 });
 </script>
@@ -345,36 +412,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @push('styles')
 <style>
-.tox-tinymce {
-    border-radius: 8px !important;
+.ql-editor {
+    font-family: 'Tajawal', sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+}
+
+.ql-container {
+    border-radius: 0 0 8px 8px !important;
     border: 2px solid #e2e8f0 !important;
+    border-top: none !important;
     transition: border-color 0.2s ease !important;
 }
 
-.tox-tinymce:focus-within {
+.ql-toolbar {
+    border-radius: 8px 8px 0 0 !important;
+    border: 2px solid #e2e8f0 !important;
+    border-bottom: none !important;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+    transition: border-color 0.2s ease !important;
+}
+
+.ql-container:focus-within,
+.ql-toolbar:focus-within {
     border-color: #4299e1 !important;
+}
+
+.ql-container:focus-within {
     box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
 }
 
-.tox-toolbar {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-}
-
-.tox-tbtn {
+.ql-toolbar button {
     border-radius: 6px !important;
     margin: 2px !important;
     transition: all 0.2s ease !important;
 }
 
-.tox-tbtn:hover {
-    background-color: #e2e8f0 !important;
+.ql-toolbar button:hover {
+    background: rgba(66, 153, 225, 0.1) !important;
     transform: translateY(-1px) !important;
 }
 
-.tox-tbtn--enabled {
-    background-color: #4299e1 !important;
+.ql-toolbar button.ql-active {
+    background: #4299e1 !important;
     color: white !important;
+}
+
+/* RTL Support */
+.ql-editor[dir="rtl"] {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+.ql-snow {
+    border: none !important;
 }
 </style>
 @endpush

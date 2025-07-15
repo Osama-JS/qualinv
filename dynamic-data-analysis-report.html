@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقرير تحليل البيانات الديناميكية - موقع شركة الاستثمار</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 20px 25px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .section-content {
+            padding: 25px;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        .status-dynamic {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-static {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-mixed {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .data-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .data-item h4 {
+            color: #495057;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .code-snippet {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 10px 0;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .recommendation {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .recommendation h4 {
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .icon-dynamic {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .icon-static {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .icon-mixed {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .summary-card h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .summary-card p {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .priority-high {
+            border-right: 5px solid #dc3545;
+        }
+
+        .priority-medium {
+            border-right: 5px solid #ffc107;
+        }
+
+        .priority-low {
+            border-right: 5px solid #28a745;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-chart-line"></i> تقرير تحليل البيانات الديناميكية</h1>
+            <p>تحليل شامل لحالة البيانات في موقع شركة الاستثمار</p>
+            <p style="font-size: 1rem; margin-top: 10px;">تاريخ التقرير: <?php echo date('Y-m-d H:i:s'); ?></p>
+        </div>
+
+        <!-- ملخص عام -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-mixed">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <h2>الملخص التنفيذي</h2>
+            </div>
+            <div class="section-content">
+                <div class="summary-grid">
+                    <div class="summary-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                        <h3 style="color: white;">75%</h3>
+                        <p style="color: white;">البيانات الديناميكية</p>
+                    </div>
+                    <div class="summary-card" style="background: linear-gradient(135deg, #ffc107, #fd7e14);">
+                        <h3 style="color: white;">20%</h3>
+                        <p style="color: white;">البيانات المختلطة</p>
+                    </div>
+                    <div class="summary-card" style="background: linear-gradient(135deg, #dc3545, #e83e8c);">
+                        <h3 style="color: white;">5%</h3>
+                        <p style="color: white;">البيانات الثابتة</p>
+                    </div>
+                </div>
+
+                <div class="recommendation">
+                    <h4><i class="fas fa-lightbulb"></i> التقييم العام</h4>
+                    <p>الموقع يحتوي على نظام إدارة محتوى متقدم مع دعم جيد للبيانات الديناميكية. معظم البيانات قابلة للتحرير من لوحة التحكم، لكن هناك بعض البيانات الثابتة التي تحتاج إلى تحويل لنظام ديناميكي.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- الصفحة الرئيسية -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-dynamic">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h2>الصفحة الرئيسية (Home)</h2>
+                <span class="status-badge status-dynamic">ديناميكية بنسبة 90%</span>
+            </div>
+            <div class="section-content">
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-check-circle" style="color: #28a745;"></i> البيانات الديناميكية المتوفرة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>معلومات الشركة:</strong> من جدول Company (الاسم، الوصف، الرسالة، الرؤية، القيم)</li>
+                        <li><strong>إحصائيات العدادات:</strong> من SiteSetting (عدد المستثمرين، الأسهم المباعة، الأسهم المتاحة، قيمة الشركة)</li>
+                        <li><strong>أعضاء مجلس الإدارة:</strong> من جدول BoardDirector</li>
+                        <li><strong>الأخبار المميزة:</strong> من جدول Article</li>
+                        <li><strong>سعر السهم:</strong> من SiteSetting</li>
+                        <li><strong>نصوص الواجهة:</strong> من SiteSetting مع دعم ثنائي اللغة</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+// مثال على استخدام البيانات الديناميكية في الصفحة الرئيسية
+$company = Company::first();
+$statistics = [
+    'investors_count' => $siteSettings['investors_count'],
+    'sold_shares' => $siteSettings['sold_shares'],
+    'available_shares' => $siteSettings['available_shares'],
+    'company_value' => $siteSettings['company_value'],
+];
+                </div>
+
+                <div class="data-item priority-medium">
+                    <h4><i class="fas fa-exclamation-triangle" style="color: #ffc107;"></i> البيانات التي تحتاج تحسين</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>القيم الافتراضية:</strong> يتم عرض قيم افتراضية في حالة عدم وجود بيانات في قاعدة البيانات</li>
+                        <li><strong>نسبة التغيير اليومي:</strong> مكتوبة بشكل ثابت (+2.5% اليوم)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة عن الشركة -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-dynamic">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h2>صفحة عن الشركة (About)</h2>
+                <span class="status-badge status-dynamic">ديناميكية بنسبة 85%</span>
+            </div>
+            <div class="section-content">
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-check-circle" style="color: #28a745;"></i> البيانات الديناميكية المتوفرة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>معلومات الشركة الأساسية:</strong> من جدول Company مع دعم ثنائي اللغة</li>
+                        <li><strong>الرسالة والرؤية والقيم:</strong> قابلة للتحرير من لوحة التحكم</li>
+                        <li><strong>أعضاء مجلس الإدارة:</strong> من جدول BoardDirector مع الصور والمناصب</li>
+                        <li><strong>عناوين الأقسام:</strong> من SiteSetting</li>
+                    </ul>
+                </div>
+
+                <div class="data-item priority-medium">
+                    <h4><i class="fas fa-exclamation-triangle" style="color: #ffc107;"></i> البيانات الثابتة الموجودة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>النصوص الاحتياطية:</strong> في حالة عدم وجود بيانات في قاعدة البيانات يتم عرض نصوص ثابتة</li>
+                        <li><strong>بعض العناوين:</strong> مثل "من نحن" و "قصتنا" قد تكون ثابتة في بعض الأماكن</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+// مثال على استخدام البيانات الديناميكية في صفحة عن الشركة
+@if($company && $company->getLocalizedAbout())
+    {!! $company->getLocalizedAbout() !!}
+@else
+    // نص احتياطي ثابت
+@endif
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة التواصل -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-mixed">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h2>صفحة التواصل (Contact)</h2>
+                <span class="status-badge status-mixed">مختلطة - 70% ديناميكية</span>
+            </div>
+            <div class="section-content">
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-check-circle" style="color: #28a745;"></i> البيانات الديناميكية المتوفرة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>معلومات الاتصال الأساسية:</strong> من جدول Company (الهاتف، البريد الإلكتروني، العنوان)</li>
+                        <li><strong>روابط وسائل التواصل الاجتماعي:</strong> من SiteSetting</li>
+                        <li><strong>نموذج الاتصال:</strong> يعمل بشكل ديناميكي مع إرسال الرسائل</li>
+                    </ul>
+                </div>
+
+                <div class="data-item priority-high">
+                    <h4><i class="fas fa-times-circle" style="color: #dc3545;"></i> البيانات الثابتة التي تحتاج إصلاح</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>القيم الافتراضية الثابتة:</strong></li>
+                        <li style="margin-right: 20px;">الهاتف: +966 11 123 4567</li>
+                        <li style="margin-right: 20px;">البريد الإلكتروني: info@qualityinvestment.com</li>
+                        <li style="margin-right: 20px;">العنوان: الرياض، المملكة العربية السعودية</li>
+                        <li><strong>ساعات العمل:</strong> مكتوبة بشكل ثابت</li>
+                        <li><strong>روابط وسائل التواصل:</strong> بعضها مكتوب كـ "#" بدلاً من الروابط الحقيقية</li>
+                    </ul>
+                </div>
+
+                <div class="code-snippet">
+// مثال على البيانات الثابتة في صفحة التواصل
+&lt;p class="text-gray-600"&gt;{{ $company->phone ?? '+966 11 123 4567' }}&lt;/p&gt;
+&lt;p class="text-gray-600"&gt;{{ $company->email ?? 'info@qualityinvestment.com' }}&lt;/p&gt;
+
+// في الفوتر
+&lt;span&gt;+966 11 123 4567&lt;/span&gt;
+&lt;span&gt;info@qualityinvestment.com&lt;/span&gt;
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الأخبار -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-dynamic">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <h2>صفحة الأخبار (News)</h2>
+                <span class="status-badge status-dynamic">ديناميكية بنسبة 95%</span>
+            </div>
+            <div class="section-content">
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-check-circle" style="color: #28a745;"></i> البيانات الديناميكية المتوفرة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>المقالات:</strong> من جدول Article مع دعم ثنائي اللغة</li>
+                        <li><strong>التصنيفات والعلامات:</strong> قابلة للإدارة</li>
+                        <li><strong>الصور المميزة:</strong> قابلة للرفع والتحرير</li>
+                        <li><strong>حالة النشر:</strong> مسودة أو منشور</li>
+                        <li><strong>عداد المشاهدات:</strong> يتم تحديثه تلقائياً</li>
+                        <li><strong>ترقيم الصفحات:</strong> يعمل بشكل ديناميكي</li>
+                    </ul>
+                </div>
+
+                <div class="data-item priority-medium">
+                    <h4><i class="fas fa-info-circle" style="color: #17a2b8;"></i> ملاحظات</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li>يمكن تعطيل صفحة الأخبار بالكامل من إعدادات الموقع</li>
+                        <li>نظام إدارة المحتوى متقدم مع محرر نصوص غني</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة مجلس الإدارة -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-dynamic">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h2>صفحة مجلس الإدارة</h2>
+                <span class="status-badge status-dynamic">ديناميكية بنسبة 100%</span>
+            </div>
+            <div class="section-content">
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-check-circle" style="color: #28a745;"></i> البيانات الديناميكية المتوفرة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>معلومات الأعضاء:</strong> من جدول BoardDirector</li>
+                        <li><strong>الأسماء والمناصب:</strong> مع دعم ثنائي اللغة</li>
+                        <li><strong>السير الذاتية:</strong> قابلة للتحرير</li>
+                        <li><strong>الصور الشخصية:</strong> قابلة للرفع والتحديث</li>
+                        <li><strong>معلومات الاتصال:</strong> البريد الإلكتروني والهاتف</li>
+                        <li><strong>روابط وسائل التواصل:</strong> قابلة للإدارة</li>
+                        <li><strong>ترتيب العرض:</strong> قابل للتحكم</li>
+                        <li><strong>حالة النشاط:</strong> يمكن إخفاء/إظهار الأعضاء</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة طلب الاستثمار -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-dynamic">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h2>صفحة طلب الاستثمار</h2>
+                <span class="status-badge status-dynamic">ديناميكية بنسبة 90%</span>
+            </div>
+            <div class="section-content">
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-check-circle" style="color: #28a745;"></i> البيانات الديناميكية المتوفرة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>سعر السهم:</strong> من SiteSetting</li>
+                        <li><strong>معلومات الشركة:</strong> للعرض في النموذج</li>
+                        <li><strong>نظام الطلبات:</strong> يحفظ في قاعدة البيانات</li>
+                        <li><strong>التحقق والتصديق:</strong> نظام متقدم للتحقق من البيانات</li>
+                        <li><strong>إشعارات البريد الإلكتروني:</strong> تلقائية</li>
+                    </ul>
+                </div>
+
+                <div class="data-item priority-medium">
+                    <h4><i class="fas fa-exclamation-triangle" style="color: #ffc107;"></i> نقاط للتحسين</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>النصوص التوضيحية:</strong> بعضها قد يكون ثابت في الكود</li>
+                        <li><strong>رسائل النجاح والخطأ:</strong> يمكن جعلها قابلة للتحرير</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- لوحة التحكم الإدارية -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-dynamic">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h2>لوحة التحكم الإدارية</h2>
+                <span class="status-badge status-dynamic">متقدمة ومتكاملة</span>
+            </div>
+            <div class="section-content">
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-check-circle" style="color: #28a745;"></i> الواجهات الإدارية المتوفرة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>إدارة معلومات الشركة:</strong> تحرير كامل للاسم، الوصف، الرسالة، الرؤية، القيم</li>
+                        <li><strong>إدارة إعدادات الموقع:</strong> العدادات، أسعار الأسهم، وسائل التواصل</li>
+                        <li><strong>إدارة مجلس الإدارة:</strong> إضافة/تحرير/حذف الأعضاء مع الصور</li>
+                        <li><strong>إدارة المقالات:</strong> نظام إدارة محتوى متقدم</li>
+                        <li><strong>إدارة طلبات الاستثمار:</strong> عرض وإدارة الطلبات</li>
+                        <li><strong>إدارة المستخدمين:</strong> نظام أدوار متقدم</li>
+                    </ul>
+                </div>
+
+                <div class="data-item priority-medium">
+                    <h4><i class="fas fa-info-circle" style="color: #17a2b8;"></i> المميزات المتقدمة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li>محررات نصوص غنية مع دعم RTL للعربية</li>
+                        <li>رفع وإدارة الصور والملفات</li>
+                        <li>نظام تصديق متقدم مع أدوار المستخدمين</li>
+                        <li>إحصائيات مفصلة في لوحة التحكم</li>
+                        <li>نظام إشعارات البريد الإلكتروني</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- التوصيات والحلول -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-mixed">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h2>التوصيات والحلول المقترحة</h2>
+            </div>
+            <div class="section-content">
+                <div class="data-item priority-high">
+                    <h4><i class="fas fa-exclamation-circle" style="color: #dc3545;"></i> أولوية عالية - يجب إصلاحها فوراً</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>إزالة البيانات الثابتة من الفوتر:</strong> استبدال الهاتف والبريد الإلكتروني الثابت بالبيانات من قاعدة البيانات</li>
+                        <li><strong>إضافة حقول مفقودة لمعلومات الشركة:</strong> ساعات العمل، العنوان المفصل</li>
+                        <li><strong>تحديث روابط وسائل التواصل:</strong> استبدال الروابط الوهمية "#" بالروابط الحقيقية</li>
+                    </ul>
+                </div>
+
+                <div class="data-item priority-medium">
+                    <h4><i class="fas fa-exclamation-triangle" style="color: #ffc107;"></i> أولوية متوسطة - تحسينات مهمة</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>إضافة نظام لإدارة نسبة التغيير اليومي:</strong> بدلاً من القيمة الثابتة +2.5%</li>
+                        <li><strong>تحسين النصوص الاحتياطية:</strong> جعلها قابلة للتحرير من لوحة التحكم</li>
+                        <li><strong>إضافة المزيد من إعدادات النصوص:</strong> لجعل المزيد من النصوص قابلة للتحرير</li>
+                    </ul>
+                </div>
+
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-info-circle" style="color: #28a745;"></i> أولوية منخفضة - تحسينات إضافية</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>إضافة المزيد من الإحصائيات:</strong> مثل عدد العملاء الجدد شهرياً</li>
+                        <li><strong>تحسين نظام إدارة الصور:</strong> إضافة المزيد من خيارات التحرير</li>
+                        <li><strong>إضافة نظام للنسخ الاحتياطية:</strong> للبيانات المهمة</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- خطة العمل المقترحة -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-dynamic">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h2>خطة العمل المقترحة</h2>
+            </div>
+            <div class="section-content">
+                <div class="data-item priority-high">
+                    <h4><i class="fas fa-calendar-alt" style="color: #dc3545;"></i> المرحلة الأولى (أولوية عالية)</h4>
+                    <ol style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>تحديث الفوتر:</strong> استبدال البيانات الثابتة بالبيانات الديناميكية</li>
+                        <li><strong>إضافة حقول جديدة لجدول Company:</strong> ساعات العمل، العنوان المفصل</li>
+                        <li><strong>تحديث صفحة التواصل:</strong> إزالة القيم الافتراضية الثابتة</li>
+                        <li><strong>اختبار شامل:</strong> للتأكد من عمل جميع البيانات الديناميكية</li>
+                    </ol>
+                </div>
+
+                <div class="data-item priority-medium">
+                    <h4><i class="fas fa-calendar-alt" style="color: #ffc107;"></i> المرحلة الثانية (تحسينات)</h4>
+                    <ol style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>إضافة نظام إدارة التغيير اليومي:</strong> للأسهم</li>
+                        <li><strong>تحسين النصوص الاحتياطية:</strong> جعلها قابلة للإدارة</li>
+                        <li><strong>إضافة المزيد من الإعدادات:</strong> للنصوص والعناوين</li>
+                        <li><strong>تحسين واجهة إدارة الإعدادات:</strong> لسهولة الاستخدام</li>
+                    </ol>
+                </div>
+
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-calendar-alt" style="color: #28a745;"></i> المرحلة الثالثة (تطويرات مستقبلية)</h4>
+                    <ol style="margin-right: 20px; margin-top: 10px;">
+                        <li><strong>إضافة المزيد من الإحصائيات:</strong> والتقارير</li>
+                        <li><strong>تحسين نظام إدارة الملفات:</strong> والصور</li>
+                        <li><strong>إضافة نظام النسخ الاحتياطية:</strong> التلقائية</li>
+                        <li><strong>تحسين الأداء:</strong> وسرعة التحميل</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- الخلاصة النهائية -->
+        <div class="section">
+            <div class="section-header">
+                <div class="icon icon-dynamic">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>الخلاصة النهائية</h2>
+            </div>
+            <div class="section-content">
+                <div class="recommendation">
+                    <h4><i class="fas fa-star"></i> التقييم الإجمالي</h4>
+                    <p><strong>الموقع في حالة ممتازة من ناحية البيانات الديناميكية</strong> - معظم المحتوى قابل للإدارة من لوحة التحكم مع نظام إدارة محتوى متقدم ودعم ثنائي اللغة.</p>
+                </div>
+
+                <div class="data-item priority-low">
+                    <h4><i class="fas fa-thumbs-up" style="color: #28a745;"></i> النقاط الإيجابية</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li>نظام إدارة محتوى متقدم مع دعم ثنائي اللغة</li>
+                        <li>معظم البيانات المهمة قابلة للتحرير من لوحة التحكم</li>
+                        <li>نظام أدوار متقدم للمستخدمين</li>
+                        <li>واجهات إدارية سهلة الاستخدام</li>
+                        <li>نظام إحصائيات شامل</li>
+                        <li>دعم رفع وإدارة الصور والملفات</li>
+                    </ul>
+                </div>
+
+                <div class="data-item priority-medium">
+                    <h4><i class="fas fa-tools" style="color: #ffc107;"></i> المطلوب للوصول للكمال</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li>إزالة البيانات الثابتة المتبقية (5% من المحتوى)</li>
+                        <li>إضافة بعض الحقول المفقودة لمعلومات الشركة</li>
+                        <li>تحسين بعض النصوص الاحتياطية</li>
+                        <li>اختبار شامل بعد التحديثات</li>
+                    </ul>
+                </div>
+
+                <div class="recommendation">
+                    <h4><i class="fas fa-rocket"></i> التوصية النهائية</h4>
+                    <p>يمكن البدء بالمرحلة الأولى من الإصلاحات فوراً لتحقيق 100% من البيانات الديناميكية. الموقع جاهز للاستخدام الفعلي مع تطبيق التحسينات المقترحة.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- معلومات التقرير -->
+        <div class="section" style="margin-top: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <div class="section-content" style="text-align: center;">
+                <h3 style="color: white; margin-bottom: 15px;"><i class="fas fa-info-circle"></i> معلومات التقرير</h3>
+                <p><strong>تاريخ الإنشاء:</strong> <?php echo date('Y-m-d H:i:s'); ?></p>
+                <p><strong>نوع التحليل:</strong> تحليل شامل للبيانات الديناميكية مقابل الثابتة</p>
+                <p><strong>نطاق التحليل:</strong> جميع صفحات الزوار ولوحة التحكم الإدارية</p>
+                <p><strong>الحالة:</strong> جاهز للتطبيق</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

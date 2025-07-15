@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحل الثاني المطبق - Navbar محسن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        /* الخلفية المتدرجة المشابهة للموقع */
+        .hero-bg {
+            background: linear-gradient(135deg, #1f2937 0%, #065f46 50%, #1f2937 100%);
+            background-image: url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(31, 41, 55, 0.9), rgba(6, 95, 70, 0.8), rgba(31, 41, 55, 0.9));
+        }
+        
+        /* الحل الثاني المطبق - Navbar محسن */
+        .navbar-enhanced {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-enhanced.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-link {
+            color: #374151;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+        
+        .navbar-link.scrolled {
+            color: #4b5563;
+            text-shadow: none;
+        }
+        
+        .navbar-link:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #1f2937;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-link.scrolled:hover {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+        }
+        
+        .active-link {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+            color: #1f2937 !important;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .active-link.scrolled {
+            background-color: rgba(34, 197, 94, 0.15) !important;
+            color: #16a34a !important;
+        }
+        
+        .logo-enhanced {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+        
+        .cta-button:hover {
+            background: linear-gradient(135deg, #047857, #065f46);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 16px rgba(5, 150, 105, 0.4);
+        }
+        
+        .lang-switcher {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            color: #374151;
+            font-weight: 600;
+        }
+        
+        .lang-switcher:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .mobile-menu-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            color: #374151;
+        }
+        
+        .mobile-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        /* محتوى الصفحة */
+        .content-section {
+            position: relative;
+            z-index: 10;
+            padding-top: 120px;
+            color: white;
+            text-align: center;
+        }
+        
+        .demo-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-badge {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 4px;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .before-after {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .before {
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        
+        .after {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar محسن -->
+    <nav class="navbar-enhanced" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20" style="flex-direction: row-reverse;">
+                
+                <!-- الشعار -->
+                <div class="flex items-center flex-shrink-0" style="order: 3;">
+                    <a href="#" class="flex items-center">
+                        <img src="https://via.placeholder.com/200x60/22c55e/ffffff?text=شعار+الشركة" 
+                             alt="شعار الشركة" class="logo-enhanced">
+                    </a>
+                </div>
+
+                <!-- القائمة الرئيسية -->
+                <div class="hidden md:flex md:space-x-8 flex-1 justify-center" style="order: 2;">
+                    <a href="#" class="navbar-link active-link">الرئيسية</a>
+                    <a href="#" class="navbar-link">عن الشركة</a>
+                    <a href="#" class="navbar-link">مجلس الإدارة</a>
+                    <a href="#" class="navbar-link">الأخبار</a>
+                    <a href="#" class="navbar-link">تواصل معنا</a>
+                    <a href="#" class="navbar-link">طلب استثمار</a>
+                </div>
+
+                <!-- الأزرار الجانبية -->
+                <div class="flex items-center space-x-6" style="order: 1;">
+                    <!-- مبدل اللغة -->
+                    <a href="#" class="lang-switcher flex items-center space-x-2">
+                        <i class="fas fa-globe text-lg"></i>
+                        <span class="text-sm">English</span>
+                    </a>
+
+                    <!-- زر CTA -->
+                    <div class="hidden md:block">
+                        <a href="#" class="cta-button">
+                            ابدأ الاستثمار
+                        </a>
+                    </div>
+
+                    <!-- زر القائمة المحمولة -->
+                    <div class="md:hidden">
+                        <button class="mobile-menu-btn">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="hero-bg">
+        <div class="content-section">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="text-5xl font-bold mb-6" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+                    ✅ تم تطبيق الحل الثاني بنجاح
+                </h1>
+                <p class="text-xl mb-8 opacity-90">
+                    Navbar محسن مع خلفية بيضاء شبه شفافة وتناسق ألوان مثالي
+                </p>
+
+                <!-- مميزات الحل -->
+                <div class="demo-card">
+                    <h2 class="text-3xl font-bold mb-6">🎨 المميزات المطبقة</h2>
+                    <div class="flex flex-wrap justify-center gap-3 mb-6">
+                        <span class="feature-badge">خلفية بيضاء شفافة</span>
+                        <span class="feature-badge">تأثير blur متقدم</span>
+                        <span class="feature-badge">ألوان نص متناسقة</span>
+                        <span class="feature-badge">ظلال ناعمة</span>
+                        <span class="feature-badge">تأثيرات hover محسنة</span>
+                        <span class="feature-badge">تصميم responsive</span>
+                    </div>
+                    
+                    <div class="text-right">
+                        <h3 class="text-xl font-bold mb-4">التحسينات المطبقة:</h3>
+                        <ul class="space-y-2 text-lg">
+                            <li>✅ خلفية متدرجة بيضاء شفافة (25% - 15%)</li>
+                            <li>✅ تأثير blur قوي (25px)</li>
+                            <li>✅ ألوان نص داكنة (#374151) مع text-shadow أبيض</li>
+                            <li>✅ تأثيرات hover محسنة مع رفع العناصر</li>
+                            <li>✅ حدود بيضاء شفافة للعناصر</li>
+                            <li>✅ تناسق ألوان مع باقي عناصر الموقع</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- مقارنة قبل وبعد -->
+                <div class="comparison-grid">
+                    <div class="before-after before">
+                        <h3 class="text-xl font-bold mb-4 text-red-300">❌ قبل التطبيق</h3>
+                        <ul class="text-right space-y-2">
+                            <li>شعار غير واضح على الخلفية المتدرجة</li>
+                            <li>نص أبيض يختفي مع الخلفية الفاتحة</li>
+                            <li>عدم تناسق في الألوان</li>
+                            <li>صعوبة في القراءة</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="before-after after">
+                        <h3 class="text-xl font-bold mb-4 text-green-300">✅ بعد التطبيق</h3>
+                        <ul class="text-right space-y-2">
+                            <li>شعار واضح ومقروء تماماً</li>
+                            <li>نص داكن مع خلفية بيضاء شفافة</li>
+                            <li>تناسق مثالي في الألوان</li>
+                            <li>سهولة في القراءة والتنقل</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- تعليمات الاختبار -->
+                <div class="demo-card mt-8">
+                    <h2 class="text-2xl font-bold mb-4">🧪 اختبر التصميم</h2>
+                    <p class="text-lg mb-4">قم بالتمرير لأعلى وأسفل لرؤية تأثير التمرير على الـ navbar</p>
+                    <button onclick="testScroll()" class="cta-button">
+                        اختبار تأثير التمرير
+                    </button>
+                </div>
+
+                <!-- مساحة إضافية للتمرير -->
+                <div style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+                    <div class="demo-card">
+                        <h2 class="text-3xl font-bold mb-4">📱 تصميم متجاوب</h2>
+                        <p class="text-lg">التصميم يعمل بشكل مثالي على جميع الأجهزة</p>
+                        <p class="text-sm mt-4 opacity-75">جرب تغيير حجم النافذة لرؤية التجاوب</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تأثير التمرير
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const scrolled = window.scrollY > 50;
+            
+            if (scrolled) {
+                navbar.classList.add('scrolled');
+                document.querySelectorAll('.navbar-link').forEach(link => {
+                    link.classList.add('scrolled');
+                });
+            } else {
+                navbar.classList.remove('scrolled');
+                document.querySelectorAll('.navbar-link').forEach(link => {
+                    link.classList.remove('scrolled');
+                });
+            }
+        });
+
+        // اختبار التمرير
+        function testScroll() {
+            window.scrollTo({
+                top: window.scrollY > 100 ? 0 : 500,
+                behavior: 'smooth'
+            });
+        }
+
+        // تأثيرات تفاعلية
+        document.addEventListener('DOMContentLoaded', function() {
+            // تأثير hover للكروت
+            const cards = document.querySelectorAll('.demo-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

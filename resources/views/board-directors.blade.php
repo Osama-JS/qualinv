@@ -5,18 +5,20 @@
 
 @section('content')
 <!-- Page Header -->
-<section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-green-900 py-24 overflow-hidden">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.1"><circle cx="30" cy="30" r="2"/></g></svg>');"></div>
+<section class="relative bg-gradient-investment text-white overflow-hidden py-24">
+    <!-- Background Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+         style="background-image: url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');">
     </div>
-    
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-green-900/90 via-gray-900/80 to-green-800/90"></div>
+
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
             {{ app()->getLocale() === 'ar' ? 'مجلس الإدارة' : 'Board of Directors' }}
         </h1>
         <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            {{ app()->getLocale() === 'ar' 
+            {{ app()->getLocale() === 'ar'
                 ? 'يضم مجلس إدارتنا نخبة من الخبراء والمتخصصين في مجال الاستثمار والأعمال، الذين يقودون الشركة نحو تحقيق أهدافها الاستراتيجية'
                 : 'Our board of directors comprises elite experts and specialists in investment and business, who lead the company towards achieving its strategic goals' }}
         </p>
@@ -33,7 +35,7 @@
                     <!-- Director Image -->
                     <div class="relative h-80 overflow-hidden">
                         @if($director->image)
-                            <img src="{{ asset('storage/' . $director->image) }}" 
+                            <img src="{{ asset('storage/' . $director->image) }}"
                                  alt="{{ app()->getLocale() === 'ar' ? $director->name_ar : $director->name_en }}"
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         @else
@@ -41,25 +43,25 @@
                                 <i class="fas fa-user text-gray-400 text-6xl"></i>
                             </div>
                         @endif
-                        
+
                         <!-- Overlay with Social Links -->
                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="absolute bottom-4 left-4 right-4">
                                 <div class="flex justify-center space-x-3 {{ app()->getLocale() === 'ar' ? 'space-x-reverse' : '' }}">
                                     @if($director->linkedin_url)
-                                        <a href="{{ $director->linkedin_url }}" target="_blank" 
+                                        <a href="{{ $director->linkedin_url }}" target="_blank"
                                            class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-colors duration-200">
                                             <i class="fab fa-linkedin-in"></i>
                                         </a>
                                     @endif
                                     @if($director->twitter_url)
-                                        <a href="{{ $director->twitter_url }}" target="_blank" 
+                                        <a href="{{ $director->twitter_url }}" target="_blank"
                                            class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-blue-400 transition-colors duration-200">
                                             <i class="fab fa-twitter"></i>
                                         </a>
                                     @endif
                                     @if($director->email)
-                                        <a href="mailto:{{ $director->email }}" 
+                                        <a href="mailto:{{ $director->email }}"
                                            class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-green-600 transition-colors duration-200">
                                             <i class="fas fa-envelope"></i>
                                         </a>
@@ -74,11 +76,11 @@
                         <h3 class="text-xl font-bold text-gray-900 mb-2">
                             {{ app()->getLocale() === 'ar' ? $director->name_ar : $director->name_en }}
                         </h3>
-                        
+
                         <p class="text-green-600 font-semibold mb-4">
                             {{ app()->getLocale() === 'ar' ? $director->position_ar : $director->position_en }}
                         </p>
-                        
+
                         @if(app()->getLocale() === 'ar' ? $director->bio_ar : $director->bio_en)
                             <p class="text-gray-600 leading-relaxed line-clamp-4">
                                 {{ app()->getLocale() === 'ar' ? $director->bio_ar : $director->bio_en }}
@@ -94,7 +96,7 @@
                                         <span>{{ $director->phone }}</span>
                                     </div>
                                 @endif
-                                
+
                                 @if($director->email)
                                     <div class="flex items-center">
                                         <i class="fas fa-envelope {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }} text-green-600"></i>
@@ -117,7 +119,7 @@
                     {{ app()->getLocale() === 'ar' ? 'لا توجد معلومات متاحة' : 'No Information Available' }}
                 </h3>
                 <p class="text-gray-600 max-w-md mx-auto">
-                    {{ app()->getLocale() === 'ar' 
+                    {{ app()->getLocale() === 'ar'
                         ? 'معلومات أعضاء مجلس الإدارة ستكون متاحة قريباً'
                         : 'Board of directors information will be available soon' }}
                 </p>
@@ -133,7 +135,7 @@
             {{ app()->getLocale() === 'ar' ? 'انضم إلى رحلة الاستثمار معنا' : 'Join Our Investment Journey' }}
         </h2>
         <p class="text-xl text-white/90 mb-8 leading-relaxed">
-            {{ app()->getLocale() === 'ar' 
+            {{ app()->getLocale() === 'ar'
                 ? 'استفد من خبرة مجلس إدارتنا المتميز وابدأ رحلتك الاستثمارية معنا اليوم'
                 : 'Benefit from our distinguished board\'s expertise and start your investment journey with us today' }}
         </p>

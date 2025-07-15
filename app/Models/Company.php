@@ -13,6 +13,7 @@ class Company extends Model
         'vision',
         'values',
         'logo',
+        'favicon',
         'email',
         'phone',
         'address',

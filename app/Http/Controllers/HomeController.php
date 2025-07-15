@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Get company information
+        // Get company information (primary source for company data)
         $company = Company::first();
 
         // Get featured articles
@@ -34,26 +34,28 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
-        // Get site settings for SEO and branding
-        $siteSettings = [
-            'site_name_en' => SiteSetting::get('site_name_en', 'Quality Investment'),
-            'site_name_ar' => SiteSetting::get('site_name_ar', 'الجودة للاستثمار'),
+        // Get all public site settings (for UI texts and configurations)
+        $siteSettings = SiteSetting::getPublicSettings();
+
+        // Add essential settings with fallbacks if not in database
+        $essentialSettings = [
             'share_price' => SiteSetting::get('share_price', '125.50'),
             'currency' => SiteSetting::get('currency', 'SAR'),
-            'meta_title_en' => SiteSetting::get('meta_title_en', 'Quality Investment Company - Leading Investment Solutions'),
-            'meta_title_ar' => SiteSetting::get('meta_title_ar', 'شركة الجودة للاستثمار - حلول استثمارية رائدة'),
-            'meta_description_en' => SiteSetting::get('meta_description_en', 'Quality Investment Company provides comprehensive investment solutions and financial services in Saudi Arabia'),
-            'meta_description_ar' => SiteSetting::get('meta_description_ar', 'شركة الجودة للاستثمار تقدم حلول استثمارية شاملة وخدمات مالية في المملكة العربية السعودية'),
-            'meta_keywords_en' => SiteSetting::get('meta_keywords_en', 'investment, finance, Saudi Arabia, quality investment'),
-            'meta_keywords_ar' => SiteSetting::get('meta_keywords_ar', 'استثمار، تمويل، السعودية، الجودة للاستثمار'),
-        ];
-
-        // Get statistics for display from settings (matching admin settings)
-        $statistics = [
             'investors_count' => SiteSetting::get('investors_count', '1000'),
             'sold_shares' => SiteSetting::get('sold_shares', '50000'),
             'available_shares' => SiteSetting::get('available_shares', '25000'),
-            'company_value' => SiteSetting::get('company_value', '500M'),
+            'company_value' => SiteSetting::get('company_value', '500M SAR'),
+        ];
+
+        // Merge settings
+        $siteSettings = array_merge($siteSettings, $essentialSettings);
+
+        // Calculate dynamic statistics
+        $statistics = [
+            'investors_count' => $siteSettings['investors_count'],
+            'sold_shares' => $siteSettings['sold_shares'],
+            'available_shares' => $siteSettings['available_shares'],
+            'company_value' => $siteSettings['company_value'],
             'total_articles' => Article::published()->count(),
             'total_board_directors' => BoardDirector::active()->count(),
         ];
@@ -70,21 +72,47 @@ class HomeController extends Controller
 
     public function about()
     {
+        // Get company information (primary source for company data)
         $company = Company::first();
+
+        // Get board directors
         $boardDirectors = BoardDirector::active()->orderBy('sort_order')->get();
 
-        return view('about', compact('company', 'boardDirectors'));
+        // Get all public site settings
+        $siteSettings = SiteSetting::getPublicSettings();
+
+        return view('about', compact('company', 'boardDirectors', 'siteSettings'));
     }
 
     public function contact()
     {
+        // Get company information (primary source for company data)
         $company = Company::first();
 
-        return view('contact', compact('company'));
+        // Get all public site settings
+        $siteSettings = SiteSetting::getPublicSettings();
+
+        return view('contact', compact('company', 'siteSettings'));
+    }
+
+     public function investment()
+    {
+        // Get company information (primary source for company data)
+        $company = Company::first();
+
+        // Get all public site settings
+        $siteSettings = SiteSetting::getPublicSettings();
+
+        return view('investment', compact('company', 'siteSettings'));
     }
 
     public function news()
     {
+        // Check if news page is enabled
+        if (!\App\Models\SiteSetting::get('news_page_enabled', true)) {
+            abort(404);
+        }
+
         $articles = Article::published()
             ->latest('published_at')
             ->paginate(12);
@@ -100,6 +128,11 @@ class HomeController extends Controller
 
     public function newsShow($slug)
     {
+        // Check if news page is enabled
+        if (!\App\Models\SiteSetting::get('news_page_enabled', true)) {
+            abort(404);
+        }
+
         $article = Article::published()
             ->where('slug', $slug)
             ->firstOrFail();
@@ -126,5 +159,24 @@ class HomeController extends Controller
         $boardDirectors = BoardDirector::active()->orderBy('sort_order')->get();
 
         return view('board-directors', compact('boardDirectors'));
+    }
+
+    public function maintenance()
+    {
+        // Get maintenance messages with safety checks to ensure they're strings
+        $maintenanceMessageEn = \App\Models\SiteSetting::get('maintenance_message_en', 'Site is under maintenance. Please check back later.');
+        $maintenanceMessageAr = \App\Models\SiteSetting::get('maintenance_message_ar', 'الموقع تحت الصيانة. يرجى المحاولة لاحقاً.');
+
+        // Ensure messages are strings (in case they're returned as arrays)
+        if (is_array($maintenanceMessageEn)) {
+            $maintenanceMessageEn = 'Site is under maintenance. Please check back later.';
+        }
+        if (is_array($maintenanceMessageAr)) {
+            $maintenanceMessageAr = 'الموقع تحت الصيانة. يرجى المحاولة لاحقاً.';
+        }
+
+        $company = Company::first();
+
+        return view('maintenance', compact('maintenanceMessageEn', 'maintenanceMessageAr', 'company'));
     }
 }

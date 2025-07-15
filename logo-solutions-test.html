@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حلول مشكلة الشعار في الـ Navbar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        /* الخلفية المتدرجة المشابهة للموقع */
+        .hero-bg {
+            background: linear-gradient(135deg, #1f2937 0%, #065f46 50%, #1f2937 100%);
+            background-image: url('https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(31, 41, 55, 0.9), rgba(6, 95, 70, 0.8), rgba(31, 41, 55, 0.9));
+        }
+        
+        /* الحل الأول: خلفية شبه شفافة للشعار */
+        .logo-solution-1 {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-solution-1:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        /* الحل الثاني: navbar أقل شفافية */
+        .navbar-solution-2 {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* الحل الثالث: ظلال قوية للشعار */
+        .logo-solution-3 {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)) 
+                    drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8))
+                    drop-shadow(-2px -2px 4px rgba(255, 255, 255, 0.3));
+            transition: all 0.3s ease;
+        }
+        
+        .logo-solution-3:hover {
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1)) 
+                    drop-shadow(3px 3px 6px rgba(0, 0, 0, 0.9))
+                    drop-shadow(-3px -3px 6px rgba(255, 255, 255, 0.4));
+            transform: scale(1.05);
+        }
+        
+        /* الحل الرابع: مزيج من الحلول */
+        .logo-solution-4 {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 6px 12px;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6)) 
+                    drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.7));
+            transition: all 0.3s ease;
+        }
+        
+        .logo-solution-4:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)) 
+                    drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+            transform: translateY(-1px);
+        }
+        
+        /* الحل الخامس: تدرج خلف الشعار */
+        .logo-solution-5 {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 8px 14px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-solution-5::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .logo-solution-5:hover::before {
+            left: 100%;
+        }
+        
+        .logo-solution-5:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        /* تحسين النصوص */
+        .solution-title {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .solution-description {
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+        }
+        
+        /* شعار تجريبي */
+        .test-logo {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+        }
+        
+        /* تحسين الأزرار */
+        .btn-primary {
+            background: linear-gradient(135deg, #059669, #047857);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #047857, #065f46);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(5, 150, 105, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        /* تحسين الكروت */
+        .solution-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .solution-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-bg min-h-screen">
+        <div class="relative z-10">
+            <!-- العنوان الرئيسي -->
+            <div class="text-center py-12">
+                <h1 class="text-4xl md:text-6xl font-bold solution-title mb-4">
+                    حلول مشكلة الشعار في الـ Navbar
+                </h1>
+                <p class="text-xl solution-description max-w-4xl mx-auto px-4">
+                    عرض مختلف الحلول المقترحة لتحسين رؤية الشعار على الخلفيات المتدرجة والشفافة
+                </p>
+            </div>
+
+            <!-- الحلول -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <!-- الحل الأول -->
+                    <div class="solution-card">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="logo-solution-1">
+                                    <img src="https://via.placeholder.com/200x60/22c55e/ffffff?text=شعار+الشركة" 
+                                         alt="شعار الشركة" class="test-logo">
+                                </div>
+                                <div class="flex space-x-4">
+                                    <button class="btn-primary">ابدأ الاستثمار</button>
+                                    <button class="btn-secondary">تعرف علينا</button>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold solution-title mb-3">
+                            الحل الأول: خلفية شبه شفافة
+                        </h3>
+                        <p class="solution-description mb-4">
+                            إضافة خلفية شبه شفافة مع تأثير blur خلف الشعار مع حدود بيضاء ناعمة
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-green-600 text-white rounded-full text-sm">أنيق</span>
+                            <span class="px-3 py-1 bg-blue-600 text-white rounded-full text-sm">حديث</span>
+                            <span class="px-3 py-1 bg-purple-600 text-white rounded-full text-sm">واضح</span>
+                        </div>
+                    </div>
+
+                    <!-- الحل الثاني -->
+                    <div class="solution-card">
+                        <div class="navbar-solution-2 p-4 rounded-lg mb-6">
+                            <div class="flex items-center justify-between">
+                                <img src="https://via.placeholder.com/200x60/22c55e/ffffff?text=شعار+الشركة" 
+                                     alt="شعار الشركة" class="test-logo">
+                                <div class="flex space-x-4">
+                                    <button class="btn-primary">ابدأ الاستثمار</button>
+                                    <button class="btn-secondary">تعرف علينا</button>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold solution-title mb-3">
+                            الحل الثاني: navbar أقل شفافية
+                        </h3>
+                        <p class="solution-description mb-4">
+                            تحسين شفافية الـ navbar نفسه مع تدرج خفيف وتأثير blur قوي
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-green-600 text-white rounded-full text-sm">شامل</span>
+                            <span class="px-3 py-1 bg-blue-600 text-white rounded-full text-sm">متوازن</span>
+                            <span class="px-3 py-1 bg-yellow-600 text-white rounded-full text-sm">عملي</span>
+                        </div>
+                    </div>
+
+                    <!-- الحل الثالث -->
+                    <div class="solution-card">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <img src="https://via.placeholder.com/200x60/22c55e/ffffff?text=شعار+الشركة" 
+                                     alt="شعار الشركة" class="test-logo logo-solution-3">
+                                <div class="flex space-x-4">
+                                    <button class="btn-primary">ابدأ الاستثمار</button>
+                                    <button class="btn-secondary">تعرف علينا</button>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold solution-title mb-3">
+                            الحل الثالث: ظلال قوية
+                        </h3>
+                        <p class="solution-description mb-4">
+                            استخدام drop-shadow متعدد الطبقات لإنشاء تأثير بروز قوي للشعار
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-green-600 text-white rounded-full text-sm">بارز</span>
+                            <span class="px-3 py-1 bg-red-600 text-white rounded-full text-sm">قوي</span>
+                            <span class="px-3 py-1 bg-purple-600 text-white rounded-full text-sm">مميز</span>
+                        </div>
+                    </div>
+
+                    <!-- الحل الرابع -->
+                    <div class="solution-card">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="logo-solution-4">
+                                    <img src="https://via.placeholder.com/200x60/22c55e/ffffff?text=شعار+الشركة" 
+                                         alt="شعار الشركة" class="test-logo">
+                                </div>
+                                <div class="flex space-x-4">
+                                    <button class="btn-primary">ابدأ الاستثمار</button>
+                                    <button class="btn-secondary">تعرف علينا</button>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold solution-title mb-3">
+                            الحل الرابع: مزيج متوازن
+                        </h3>
+                        <p class="solution-description mb-4">
+                            دمج الخلفية الشبه شفافة مع الظلال الناعمة للحصول على أفضل النتائج
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-green-600 text-white rounded-full text-sm">متوازن</span>
+                            <span class="px-3 py-1 bg-blue-600 text-white rounded-full text-sm">مثالي</span>
+                            <span class="px-3 py-1 bg-purple-600 text-white rounded-full text-sm">موصى به</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- الحل الخامس - عرض كامل -->
+                <div class="mt-8">
+                    <div class="solution-card">
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="logo-solution-5">
+                                    <img src="https://via.placeholder.com/200x60/22c55e/ffffff?text=شعار+الشركة" 
+                                         alt="شعار الشركة" class="test-logo">
+                                </div>
+                                <div class="flex space-x-4">
+                                    <button class="btn-primary">ابدأ الاستثمار</button>
+                                    <button class="btn-secondary">تعرف علينا</button>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold solution-title mb-3">
+                            الحل الخامس: تدرج تفاعلي
+                        </h3>
+                        <p class="solution-description mb-4">
+                            خلفية متدرجة مع تأثير تفاعلي عند التمرير (hover) لإضافة لمسة حديثة وجذابة
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-green-600 text-white rounded-full text-sm">تفاعلي</span>
+                            <span class="px-3 py-1 bg-blue-600 text-white rounded-full text-sm">حديث</span>
+                            <span class="px-3 py-1 bg-purple-600 text-white rounded-full text-sm">جذاب</span>
+                            <span class="px-3 py-1 bg-yellow-600 text-white rounded-full text-sm">مبتكر</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أزرار التحكم -->
+                <div class="text-center mt-12">
+                    <h3 class="text-2xl font-bold solution-title mb-6">اختر الحل المفضل لديك</h3>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button onclick="applyToSite(1)" class="btn-primary">تطبيق الحل الأول</button>
+                        <button onclick="applyToSite(2)" class="btn-primary">تطبيق الحل الثاني</button>
+                        <button onclick="applyToSite(3)" class="btn-primary">تطبيق الحل الثالث</button>
+                        <button onclick="applyToSite(4)" class="btn-primary">تطبيق الحل الرابع</button>
+                        <button onclick="applyToSite(5)" class="btn-primary">تطبيق الحل الخامس</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function applyToSite(solutionNumber) {
+            alert(`سيتم تطبيق الحل رقم ${solutionNumber} على الموقع الفعلي. هل أنت متأكد؟`);
+            // هنا سيتم إضافة الكود لتطبيق الحل المختار
+        }
+
+        // تأثيرات تفاعلية إضافية
+        document.addEventListener('DOMContentLoaded', function() {
+            // إضافة تأثير parallax خفيف
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelector('.hero-bg');
+                const speed = scrolled * 0.5;
+                parallax.style.transform = `translateY(${speed}px)`;
+            });
+
+            // تأثير hover للكروت
+            const cards = document.querySelectorAll('.solution-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.3)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

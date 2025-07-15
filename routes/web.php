@@ -17,6 +17,7 @@ Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('l
 
 // Public Pages
 Route::get('/about', [App\Http\Controllers\HomeController::class, 'about'])->name('about');
+Route::get('/investment-mechanism', [App\Http\Controllers\HomeController::class, 'investment'])->name('investment-mechanism');
 Route::get('/board-directors', [App\Http\Controllers\HomeController::class, 'boardDirectors'])->name('board-directors');
 Route::get('/news', [App\Http\Controllers\HomeController::class, 'news'])->name('news');
 Route::get('/news/{slug}', [App\Http\Controllers\HomeController::class, 'newsShow'])->name('news.show');
@@ -24,6 +25,12 @@ Route::get('/news/{slug}', [App\Http\Controllers\HomeController::class, 'newsSho
 // Contact routes
 Route::get('/contact', [App\Http\Controllers\ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
+
+// Dynamic page routes
+Route::get('/page/{slug}', [App\Http\Controllers\PageController::class, 'show'])->name('page.show');
+
+// Maintenance page route
+Route::get('/maintenance', [App\Http\Controllers\HomeController::class, 'maintenance'])->name('maintenance');
 
 // Test route for comprehensive data verification (remove in production)
 Route::get('/verify-data', function() {
@@ -63,16 +70,16 @@ Route::get('/verify-data', function() {
             'success' => true,
             'data_verification' => [
                 'company' => [
-                    'name_ar' => $company->name_ar ?? 'Not set',
-                    'name_en' => $company->name_en ?? 'Not set',
-                    'about_ar' => $company->about_ar ? 'Set (' . strlen($company->about_ar) . ' chars)' : 'Not set',
-                    'about_en' => $company->about_en ? 'Set (' . strlen($company->about_en) . ' chars)' : 'Not set',
-                    'mission_ar' => $company->mission_ar ? 'Set' : 'Not set',
-                    'mission_en' => $company->mission_en ? 'Set' : 'Not set',
-                    'vision_ar' => $company->vision_ar ? 'Set' : 'Not set',
-                    'vision_en' => $company->vision_en ? 'Set' : 'Not set',
-                    'values_ar' => $company->values_ar ? 'Set' : 'Not set',
-                    'values_en' => $company->values_en ? 'Set' : 'Not set',
+                    'name_ar' => $company->getLocalizedName('ar') ?? 'Not set',
+                    'name_en' => $company->getLocalizedName('en') ?? 'Not set',
+                    'about_ar' => $company->getLocalizedAbout('ar') ? 'Set (' . strlen($company->getLocalizedAbout('ar')) . ' chars)' : 'Not set',
+                    'about_en' => $company->getLocalizedAbout('en') ? 'Set (' . strlen($company->getLocalizedAbout('en')) . ' chars)' : 'Not set',
+                    'mission_ar' => $company->getLocalizedMission('ar') ? 'Set' : 'Not set',
+                    'mission_en' => $company->getLocalizedMission('en') ? 'Set' : 'Not set',
+                    'vision_ar' => $company->getLocalizedVision('ar') ? 'Set' : 'Not set',
+                    'vision_en' => $company->getLocalizedVision('en') ? 'Set' : 'Not set',
+                    'values_ar' => $company->getLocalizedValues('ar') ? 'Set' : 'Not set',
+                    'values_en' => $company->getLocalizedValues('en') ? 'Set' : 'Not set',
                 ],
                 'statistics_settings' => [
                     'investors_count' => $settings['investors_count'] ?? 'Not set',
@@ -122,6 +129,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin', 'update.las
     // Article routes (Media Center)
     Route::resource('articles', App\Http\Controllers\Admin\ArticleController::class);
     Route::post('articles/{article}/toggle-featured', [App\Http\Controllers\Admin\ArticleController::class, 'toggleFeatured'])->name('articles.toggle-featured');
+
+    // Page management routes
+    Route::resource('pages', App\Http\Controllers\Admin\PageController::class);
+    Route::post('pages/{page}/toggle-status', [App\Http\Controllers\Admin\PageController::class, 'toggleStatus'])->name('pages.toggle-status');
+    Route::post('pages/update-order', [App\Http\Controllers\Admin\PageController::class, 'updateOrder'])->name('pages.update-order');
+
+    // Image upload for TinyMCE editor
+    Route::post('upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('upload-image');
 
     // User management routes (Admin only)
     Route::resource('users', UserController::class);

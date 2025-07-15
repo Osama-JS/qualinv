@@ -15,11 +15,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'setlocale' => \App\Http\Middleware\SetLocale::class,
             'update.last.login' => \App\Http\Middleware\UpdateLastLogin::class,
+            'maintenance' => \App\Http\Middleware\MaintenanceMode::class,
         ]);
 
-        // Apply SetLocale middleware globally
+        // Apply SetLocale and MaintenanceMode middleware globally
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
+            \App\Http\Middleware\MaintenanceMode::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

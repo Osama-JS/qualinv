@@ -103,11 +103,11 @@
             <div class="animate-fade-in-up">
                 <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white"
                     style="text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9), 1px 1px 3px rgba(0, 0, 0, 0.8);">
-                    {{ $siteSettings['hero_title_' . app()->getLocale()] ?? __('public.hero_title') }}
+                    {{ $siteSettings['hero_title_' . app()->getLocale()] ?? ($company ? $company->getLocalizedName() : __('public.hero_title')) }}
                 </h1>
 
                 <p class="text-xl mb-8 text-green-100 leading-relaxed">
-                    {{ $siteSettings['hero_subtitle_' . app()->getLocale()] ?? __('public.hero_subtitle') }}
+                    {!! $siteSettings['hero_subtitle_' . app()->getLocale()] ?? ($company ? $company->getLocalizedAbout() : __('public.hero_subtitle')) !!}
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 mt-4">
@@ -126,8 +126,8 @@
                         {{ $siteSettings['hero_share_price_title_' . app()->getLocale()] ?? __('public.current_share_price') }}
                     </h3>
                     <div class="text-center">
-                        <div class="text-5xl font-bold mb-2">{{ $siteSettings['share_price'] }}</div>
-                        <div class="text-lg text-gray-200">{{ $siteSettings['currency'] }}</div>
+                        <div class="text-5xl font-bold mb-2">{{ $siteSettings['share_price'] ?? '125.50' }}</div>
+                        <div class="text-lg text-gray-200">{{ $siteSettings['currency'] ?? 'SAR' }}</div>
                         <div class="mt-4 text-green-300 flex items-center justify-center">
                             <i class="fas fa-arrow-up mr-2"></i>
                             <span>+2.5% {{ __('public.today') }}</span>
@@ -151,12 +151,12 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                {{ app()->getLocale() === 'ar' ? 'إنجازاتنا بالأرقام' : 'Our Achievements in Numbers' }}
+                {{ $siteSettings['stats_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'إنجازاتنا بالأرقام' : 'Our Achievements in Numbers') }}
             </h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                {{ app()->getLocale() === 'ar'
+                {{ $siteSettings['stats_subtitle_' . app()->getLocale()] ?? (app()->getLocale() === 'ar'
                     ? 'أرقام تعكس ثقة عملائنا ونجاحنا في تحقيق أهدافهم الاستثمارية'
-                    : 'Numbers that reflect our clients\' trust and our success in achieving their investment goals'
+                    : 'Numbers that reflect our clients\' trust and our success in achieving their investment goals')
                 }}
             </p>
         </div>
@@ -173,7 +173,7 @@
                         <div class="w-20 h-20 bg-gradient-to-br from-green-700 to-green-800 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                             <i class="fas fa-users text-white text-3xl"></i>
                         </div>
-                        <div class="text-4xl font-bold text-gray-900 mb-2 counter" data-target="{{ preg_replace('/[^0-9]/', '', $statistics['investors_count']) }}">0</div>
+                        <div class="text-4xl font-bold text-gray-900 mb-2 counter" data-target="{{ $statistics['investors_count'] ?? 0 }}">0</div>
                         <div class="text-lg font-semibold text-green-700 mb-2">{{ app()->getLocale() === 'ar' ? 'المستثمرين' : 'Investors' }}</div>
                         <div class="text-sm text-gray-500">{{ app()->getLocale() === 'ar' ? 'عميل يثق بخدماتنا' : 'Clients trust our services' }}</div>
                     </div>
@@ -191,7 +191,7 @@
                         <div class="w-20 h-20 bg-gradient-to-br from-green-700 to-green-800 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                             <i class="fas fa-chart-line text-white text-3xl"></i>
                         </div>
-                        <div class="text-4xl font-bold text-gray-900 mb-2 counter" data-target="{{ preg_replace('/[^0-9]/', '', $statistics['sold_shares']) }}">0</div>
+                        <div class="text-4xl font-bold text-gray-900 mb-2 counter" data-target="{{ $statistics['sold_shares'] ?? 0 }}">0</div>
                         <div class="text-lg font-semibold text-green-700 mb-2">{{ app()->getLocale() === 'ar' ? 'الأسهم المباعة' : 'Shares Sold' }}</div>
                         <div class="text-sm text-gray-500">{{ app()->getLocale() === 'ar' ? 'سهم تم بيعه بنجاح' : 'Shares sold successfully' }}</div>
                     </div>
@@ -209,7 +209,7 @@
                         <div class="w-20 h-20 bg-gradient-to-br from-green-700 to-green-800 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                             <i class="fas fa-coins text-white text-3xl"></i>
                         </div>
-                        <div class="text-4xl font-bold text-gray-900 mb-2 counter" data-target="{{ preg_replace('/[^0-9]/', '', $statistics['available_shares']) }}">0</div>
+                        <div class="text-4xl font-bold text-gray-900 mb-2 counter" data-target="{{ $statistics['available_shares'] ?? 0 }}">0</div>
                         <div class="text-lg font-semibold text-green-700 mb-2">{{ app()->getLocale() === 'ar' ? 'الأسهم المتاحة' : 'Available Shares' }}</div>
                         <div class="text-sm text-gray-500">{{ app()->getLocale() === 'ar' ? 'سهم متاح للاستثمار' : 'Shares available for investment' }}</div>
                     </div>
@@ -227,7 +227,7 @@
                         <div class="w-20 h-20 bg-gradient-to-br from-green-700 to-green-800 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
                             <i class="fas fa-dollar-sign text-white text-3xl"></i>
                         </div>
-                        <div class="text-4xl font-bold text-gray-900 mb-2">{{ $statistics['company_value'] }}</div>
+                        <div class="text-4xl font-bold text-gray-900 mb-2">{{ $statistics['company_value'] ?? '0 SAR' }}</div>
                         <div class="text-lg font-semibold text-green-700 mb-2">{{ app()->getLocale() === 'ar' ? 'قيمة الشركة' : 'Company Value' }}</div>
                         <div class="text-sm text-gray-500">{{ app()->getLocale() === 'ar' ? 'القيمة السوقية الحالية' : 'Current market value' }}</div>
                     </div>
@@ -243,67 +243,55 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                {{ app()->getLocale() === 'ar' ? 'نبذة عن الشركة' : 'About Our Company' }}
+                {{ $siteSettings['about_section_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'نبذة عن الشركة' : 'About Our Company') }}
             </h2>
             <div class="max-w-4xl mx-auto text-lg text-gray-600 leading-relaxed">
                 @if($company)
-                    {!! app()->getLocale() === 'ar'
-                        ? ($company->about_ar ?? '')
-                        : ($company->about_en ?? '')
-                    !!}
+                    {!! $company->getLocalizedAbout() !!}
                 @endif
             </div>
         </div>
 
         <!-- Mission, Vision, Values -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            @if($company && (($company->mission_ar && app()->getLocale() === 'ar') || ($company->mission_en && app()->getLocale() === 'en')))
+            @if($company && $company->getLocalizedMission())
             <div class="text-center">
                 <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <i class="fas fa-bullseye text-blue-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ app()->getLocale() === 'ar' ? 'رسالتنا' : 'Our Mission' }}
+                    {{ $siteSettings['mission_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'رسالتنا' : 'Our Mission') }}
                 </h3>
                 <div class="text-gray-600">
-                    {!! app()->getLocale() === 'ar'
-                        ? ($company->mission_ar ?? '')
-                        : ($company->mission_en ?? '')
-                    !!}
+                    {!! $company->getLocalizedMission() !!}
                 </div>
             </div>
             @endif
 
-            @if($company && (($company->vision_ar && app()->getLocale() === 'ar') || ($company->vision_en && app()->getLocale() === 'en')))
+            @if($company && $company->getLocalizedVision())
             <div class="text-center">
                 <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <i class="fas fa-eye text-green-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ app()->getLocale() === 'ar' ? 'رؤيتنا' : 'Our Vision' }}
+                    {{ $siteSettings['vision_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'رؤيتنا' : 'Our Vision') }}
                 </h3>
                 <div class="text-gray-600">
-                    {!! app()->getLocale() === 'ar'
-                        ? ($company->vision_ar ?? '')
-                        : ($company->vision_en ?? '')
-                    !!}
+                    {!! $company->getLocalizedVision() !!}
                 </div>
             </div>
             @endif
 
-            @if($company && (($company->values_ar && app()->getLocale() === 'ar') || ($company->values_en && app()->getLocale() === 'en')))
+            @if($company && $company->getLocalizedValues())
             <div class="text-center">
                 <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <i class="fas fa-heart text-purple-600 text-2xl"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ app()->getLocale() === 'ar' ? 'قيمنا' : 'Our Values' }}
+                    {{ $siteSettings['values_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'قيمنا' : 'Our Values') }}
                 </h3>
                 <div class="text-gray-600">
-                    {!! app()->getLocale() === 'ar'
-                        ? ($company->values_ar ?? '')
-                        : ($company->values_en ?? '')
-                    !!}
+                    {!! $company->getLocalizedValues() !!}
                 </div>
             </div>
             @endif
@@ -526,10 +514,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                {{ app()->getLocale() === 'ar' ? 'آخر الأخبار' : 'Latest News' }}
+                {{ $siteSettings['news_section_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'آخر الأخبار' : 'Latest News') }}
             </h2>
             <p class="text-xl text-gray-600">
-                {{ app()->getLocale() === 'ar' ? 'تابع آخر أخبار الشركة والسوق المالي' : 'Stay updated with our latest company and market news' }}
+                {{ $siteSettings['news_section_subtitle_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'تابع آخر أخبار الشركة والسوق المالي' : 'Stay updated with our latest company and market news') }}
             </p>
         </div>
 
@@ -584,10 +572,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                {{ app()->getLocale() === 'ar' ? 'مجلس الإدارة' : 'Board of Directors' }}
+                {{ $siteSettings['board_section_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'مجلس الإدارة' : 'Board of Directors') }}
             </h2>
             <p class="text-xl text-gray-600">
-                {{ app()->getLocale() === 'ar' ? 'تعرف على قادة الشركة وخبراتهم المتميزة' : 'Meet our company leaders and their distinguished expertise' }}
+                {{ $siteSettings['board_section_subtitle_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'تعرف على قادة الشركة وخبراتهم المتميزة' : 'Meet our company leaders and their distinguished expertise') }}
             </p>
         </div>
 
@@ -665,15 +653,24 @@ function animateCounters() {
 }
 
 // Intersection Observer for triggering animation when section is visible
+// Adjust threshold based on screen size for better mobile experience
+const isMobile = window.innerWidth <= 768;
 const observerOptions = {
-    threshold: 0.5,
-    rootMargin: '0px 0px -100px 0px'
+    threshold: isMobile ? 0.2 : 0.5, // Lower threshold for mobile devices
+    rootMargin: isMobile ? '0px 0px -50px 0px' : '0px 0px -100px 0px' // Smaller margin for mobile
 };
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            animateCounters();
+            // Add a small delay for mobile devices to ensure smooth animation
+            if (isMobile) {
+                setTimeout(() => {
+                    animateCounters();
+                }, 100);
+            } else {
+                animateCounters();
+            }
             observer.unobserve(entry.target);
         }
     });
@@ -684,6 +681,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const statsSection = document.querySelector('.counter').closest('section');
     if (statsSection) {
         observer.observe(statsSection);
+    }
+
+    // Fallback for very small screens - trigger animation on scroll if not triggered by intersection observer
+    if (window.innerWidth <= 414) {
+        let animationTriggered = false;
+        window.addEventListener('scroll', () => {
+            if (!animationTriggered) {
+                const statsSection = document.querySelector('.counter').closest('section');
+                if (statsSection) {
+                    const rect = statsSection.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+
+                    // Trigger when any part of the section is visible
+                    if (rect.top < windowHeight && rect.bottom > 0) {
+                        animateCounters();
+                        animationTriggered = true;
+                    }
+                }
+            }
+        });
     }
 });
 </script>

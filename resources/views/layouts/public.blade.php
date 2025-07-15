@@ -8,9 +8,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', config('app.name', 'Quality Investment'))</title>
+    <title>@yield('title', config('app.name', ($company ? $company->getLocalizedName() : 'Quality Investment')))</title>
     <meta name="description" content="@yield('description', 'Quality Investment Company - Leading investment solutions in Saudi Arabia')">
     <meta name="keywords" content="@yield('keywords', 'investment, finance, Saudi Arabia, quality investment')">
+
+    <!-- Favicon -->
+    @php
+        $company = \App\Models\Company::first();
+    @endphp
+    @if($company && $company->favicon)
+        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $company->favicon) }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('storage/' . $company->favicon) }}">
+        @if(pathinfo($company->favicon, PATHINFO_EXTENSION) === 'png')
+            <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('storage/' . $company->favicon) }}">
+            <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('storage/' . $company->favicon) }}">
+        @endif
+    @else
+        <!-- Default favicon -->
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    @endif
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -329,40 +345,47 @@
             background: #555;
         }
 
-        /* Navbar Styles */
+        /* Navbar Styles - Enhanced Solution 2 */
         .navbar-transparent {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-solid {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgb(255, 255, 255);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-text {
-            color: white;
-            transition: color 0.3s ease;
+            color: #1f2937;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
         }
 
         .navbar-text.scrolled {
             color: #1f2937;
+            text-shadow: none;
         }
 
         .navbar-link {
-            color: rgba(255, 255, 255, 0.9);
+            color: #fdfdfd;
+            font-weight: 500;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .navbar-link.scrolled {
             color: #4b5563;
+            text-shadow: none;
         }
 
         .navbar-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
             transform: translateY(-1px);
         }
 
@@ -372,22 +395,22 @@
         }
 
         .active-link {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white !important;
+            color: #ffffff !important;
+            font-weight: 700;
         }
 
         .active-link.scrolled {
-            background-color: rgba(34, 197, 94, 0.1);
+            background-color: rgba(34, 197, 94, 0.15);
             color: #16a34a !important;
         }
 
         .logo-with-border-enhanced {
-            filter: drop-shadow(0 0 0 white) drop-shadow(1px 0 0 white) drop-shadow(-1px 0 0 white) drop-shadow(0 1px 0 white) drop-shadow(0 -1px 0 white);
+            /* filter: drop-shadow(0 0 0 white) drop-shadow(1px 0 0 white) drop-shadow(-1px 0 0 white) drop-shadow(0 1px 0 white) drop-shadow(0 -1px 0 white); */
             height: 80px;
         }
 
         .logo-with-border{
-            filter: drop-shadow(0 0 0 white) drop-shadow(1px 0 0 white) drop-shadow(-1px 0 0 white) drop-shadow(0 1px 0 white) drop-shadow(0 -1px 0 white);
+            /* filter: drop-shadow(0 0 0 white) drop-shadow(1px 0 0 white) drop-shadow(-1px 0 0 white) drop-shadow(0 1px 0 white) drop-shadow(0 -1px 0 white); */
             height: 100px;
         }
 
@@ -501,38 +524,7 @@
             color: #6b7280;
         }
 
-        .navbar-text.scrolled {
-            color: #1f2937;
-        }
-
-        .navbar-link {
-            color: rgba(255, 255, 255, 0.9);
-            position: relative;
-        }
-
-        .navbar-link.scrolled {
-            color: #4b5563;
-        }
-
-        .navbar-link:hover {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .navbar-link.scrolled:hover {
-            color: #3b82f6;
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        .active-link {
-            color: white !important;
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .active-link.scrolled {
-            color: #3b82f6 !important;
-            background: rgba(59, 130, 246, 0.1);
-        }
+        /* Duplicate styles removed - using main navbar styles above */
 
         .active-link::after {
             content: '';
@@ -669,8 +661,8 @@
 </head>
 
 <body class="antialiased {{ app()->getLocale() === 'ar' ? 'font-arabic' : 'font-english' }}">
-    <!-- Modern Transparent Navigation -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out bg-transparent">
+    <!-- Modern Enhanced Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out navbar-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 navbar-container">
             <div class="flex items-center justify-between h-20" style="{{ app()->getLocale() === 'ar' ? 'flex-direction: row-reverse !important;' : '' }}">
                 <!-- Logo Section -->
@@ -709,6 +701,24 @@
                     </a>
 
 
+
+                    @if(\App\Models\SiteSetting::get('news_page_enabled', true))
+                    <a href="{{ route('news') }}"
+                        class="navbar-link px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg {{ request()->routeIs('news*') ? 'active-link' : '' }}">
+                        {{ app()->getLocale() === 'ar' ? 'الأخبار' : 'News' }}
+                    </a>
+                    @endif
+
+                    @php
+                        $navbarPages = \App\Models\Page::active()->navbar()->orderBy('sort_order')->get();
+                    @endphp
+                    @foreach($navbarPages as $navPage)
+                        <a href="{{ route('page.show', $navPage->getLocalizedSlug()) }}"
+                            class="navbar-link px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg {{ request()->is('page/' . $navPage->getLocalizedSlug()) ? 'active-link' : '' }}">
+                            {{ $navPage->getLocalizedName() }}
+                        </a>
+                    @endforeach
+
                     <a href="{{ route('contact') }}"
                         class="navbar-link px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg {{ request()->routeIs('contact') ? 'active-link' : '' }}">
                         {{ __('public.contact') }}
@@ -724,17 +734,17 @@
                     <!-- Language Switcher -->
                     <div class="relative">
                         <a href="{{ route('language.switch', app()->getLocale() === 'ar' ? 'en' : 'ar') }}"
-                            class="flex items-center space-x-2 navbar-link hover:bg-white/10 px-3 py-2 rounded-lg transition-all duration-300"
+                            class="flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 bg-white/20 hover:bg-white/30 border border-white/20 backdrop-blur-sm"
                             title="{{ __('public.toggle_language') }}">
-                            <i class="fas fa-globe text-lg"></i>
-                            <span class="text-sm font-medium">{{ app()->getLocale() === 'ar' ? __('public.english') : __('public.arabic') }}</span>
+                            <i class="fas fa-globe text-lg text-gray-700"></i>
+                            <span class="text-sm font-medium text-gray-700">{{ app()->getLocale() === 'ar' ? __('public.english') : __('public.arabic') }}</span>
                         </a>
                     </div>
 
                     <!-- CTA Button -->
                     <div class="hidden md:block">
                         <a href="{{ route('investment-application.create') }}"
-                            class="bg-gradient-to-r from-green-700 to-gray-800 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                            class="bg-gradient-to-r from-green-700 to-gray-800 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-white/20 backdrop-blur-sm">
                             {{ app()->getLocale() === 'ar' ? 'ابدأ الاستثمار' : 'Start Investing' }}
                         </a>
                     </div>
@@ -742,9 +752,9 @@
                     <!-- Mobile menu button -->
                     <div class="md:hidden">
                         <button type="button"
-                            class="mobile-menu-button navbar-link p-3 rounded-xl  backdrop-blur-sm hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 ">
-                            <i class="fas fa-bars text-xl menu-icon"></i>
-                            <i class="fas fa-times text-xl close-icon hidden"></i>
+                            class="mobile-menu-button p-3 rounded-xl backdrop-blur-sm bg-white/20 hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 border border-white/20">
+                            <i class="fas fa-bars text-xl menu-icon text-gray-700"></i>
+                            <i class="fas fa-times text-xl close-icon hidden text-gray-700"></i>
                         </button>
                     </div>
                 </div>
@@ -810,6 +820,7 @@
                         </div>
                     </a>
 
+                    @if(\App\Models\SiteSetting::get('news_page_enabled', true))
                     <a href="{{ route('news') }}"
                         class="flex items-center space-x-4 p-4 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 transition-all duration-300 group {{ request()->routeIs('news*') ? 'bg-gradient-to-r from-green-100 to-blue-100 text-green-700' : 'text-gray-700' }}">
                         <div
@@ -822,6 +833,22 @@
                                 {{ app()->getLocale() === 'ar' ? 'آخر الأخبار والتحديثات' : 'Latest news and updates' }}</div>
                         </div>
                     </a>
+                    @endif
+
+                    @foreach($navbarPages as $navPage)
+                        <a href="{{ route('page.show', $navPage->getLocalizedSlug()) }}"
+                            class="flex items-center space-x-4 p-4 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 transition-all duration-300 group {{ request()->is('page/' . $navPage->getLocalizedSlug()) ? 'bg-gradient-to-r from-green-100 to-blue-100 text-green-700' : 'text-gray-700' }}">
+                            <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                                <i class="fas fa-file-alt text-purple-600"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold">{{ $navPage->getLocalizedName() }}</div>
+                                @if($navPage->getLocalizedDescription())
+                                <div class="text-sm text-gray-500">{{ Str::limit($navPage->getLocalizedDescription(), 40) }}</div>
+                                @endif
+                            </div>
+                        </a>
+                    @endforeach
 
                     <a href="{{ route('contact') }}"
                         class="flex items-center space-x-4 p-4 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 transition-all duration-300 group {{ request()->routeIs('contact') ? 'bg-gradient-to-r from-green-100 to-blue-100 text-green-700' : 'text-gray-700' }}">
@@ -942,6 +969,14 @@
                         <li><a href="{{ route('about') }}"
                                 class="text-gray-300 hover:text-white transition-colors">{{ __('About Us') }}</a></li>
 
+                        @php
+                            $footerPages = \App\Models\Page::active()->footer()->orderBy('sort_order')->get();
+                        @endphp
+                        @foreach($footerPages as $footerPage)
+                            <li><a href="{{ route('page.show', $footerPage->getLocalizedSlug()) }}"
+                                    class="text-gray-300 hover:text-white transition-colors">{{ $footerPage->getLocalizedName() }}</a></li>
+                        @endforeach
+
                         <li><a href="{{ route('contact') }}"
                                 class="text-gray-300 hover:text-white transition-colors">{{ __('Contact') }}</a></li>
                     </ul>
@@ -988,7 +1023,7 @@
             <div class="border-t border-gray-800 mt-8 pt-8 text-center">
                 <p class="text-gray-400">
                     &copy; {{ date('Y') }}
-                    {{ app()->getLocale() === 'ar' ? 'شركة الجودة للاستثمار' : 'Quality Investment Company' }}.
+                    {{ $company ? $company->getLocalizedName() : (app()->getLocale() === 'ar' ? 'شركة الجودة للاستثمار' : 'Quality Investment Company') }}.
                     {{ __('All rights reserved.') }}
                 </p>
             </div>
@@ -1043,13 +1078,14 @@
                 });
             });
 
-            // Navbar scroll effect
+            // Navbar scroll effect - Enhanced for Solution 2
             function updateNavbar() {
                 const scrolled = window.scrollY > 50;
 
                 if (scrolled) {
+                    // Keep the enhanced transparent background, just add more shadow
                     navbar.classList.remove('bg-transparent');
-                    navbar.classList.add('bg-white', 'shadow-lg');
+                    navbar.classList.add('navbar-solid');
 
                     if (navbarText) navbarText.classList.add('scrolled');
                     if (logoContainer) logoContainer.classList.add('scrolled');
@@ -1062,8 +1098,9 @@
                         link.classList.add('scrolled');
                     });
                 } else {
-                    navbar.classList.remove('bg-white', 'shadow-lg');
-                    navbar.classList.add('bg-transparent');
+                    // Use our enhanced transparent navbar
+                    navbar.classList.remove('navbar-solid');
+                    navbar.classList.add('navbar-transparent');
 
                     if (navbarText) navbarText.classList.remove('scrolled');
                     if (logoContainer) logoContainer.classList.remove('scrolled');

@@ -7,6 +7,22 @@
 
     <title>{{ config('app.name', 'Laravel') }} - Admin Dashboard</title>
 
+    <!-- Favicon -->
+    @php
+        $company = \App\Models\Company::first();
+    @endphp
+    @if($company && $company->favicon)
+        <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $company->favicon) }}">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('storage/' . $company->favicon) }}">
+        @if(pathinfo($company->favicon, PATHINFO_EXTENSION) === 'png')
+            <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('storage/' . $company->favicon) }}">
+            <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('storage/' . $company->favicon) }}">
+        @endif
+    @else
+        <!-- Default favicon -->
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    @endif
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -202,6 +218,17 @@
                     </div>
                     {{ __('admin.media_center') }}
                     @if(request()->routeIs('admin.articles.*'))
+                        <div class="ml-auto w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    @endif
+                </a>
+
+                <!-- Page Management -->
+                <a href="{{ route('admin.pages.index') }}" class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.pages.*') ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-lg transform scale-105' : 'text-gray-300 hover:bg-gray-700/50 hover:text-white hover:transform hover:scale-105' }}">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-lg {{ request()->routeIs('admin.pages.*') ? 'bg-white/20' : 'bg-gray-700 group-hover:bg-gray-600' }} mr-3 transition-colors">
+                        <i class="fas fa-file-code text-sm"></i>
+                    </div>
+                    {{ __('admin.page_management') }}
+                    @if(request()->routeIs('admin.pages.*'))
                         <div class="ml-auto w-2 h-2 bg-white rounded-full animate-pulse"></div>
                     @endif
                 </a>
