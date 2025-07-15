@@ -130,10 +130,7 @@
                         <div class="text-center">
                             <div class="text-4xl font-bold mb-2">{{ $siteSettings['share_price'] ?? '125.50' }}</div>
                             <div class="text-lg text-gray-200">{{ $siteSettings['currency'] ?? 'SAR' }}</div>
-                            <div class="mt-3 text-green-300 flex items-center justify-center">
-                                <i class="fas fa-arrow-up mr-2"></i>
-                                <span>+2.5% {{ $siteSettings['hero_share_price_change_' . app()->getLocale()] ?? __('public.today') }}</span>
-                            </div>
+                            
                             <div class="mt-3 text-sm text-gray-300">
                                 {{ $siteSettings['hero_share_price_updated_' . app()->getLocale()] ?? __('public.last_updated') . ': ' . __('public.today') }}
                             </div>
@@ -148,10 +145,7 @@
                         <div class="text-center">
                             <div class="text-4xl font-bold mb-2">{{ $siteSettings['redeemable_share_price'] ?? '150.00' }}</div>
                             <div class="text-lg text-gray-200">{{ $siteSettings['redeemable_share_currency'] ?? 'SAR' }}</div>
-                            <div class="mt-3 text-blue-300 flex items-center justify-center">
-                                <i class="fas fa-sync-alt mr-2"></i>
-                                <span>{{ app()->getLocale() === 'ar' ? 'قابل للاسترداد' : 'Redeemable' }}</span>
-                            </div>
+                            
                             <div class="mt-3 text-sm text-gray-300">
                                 {{ $siteSettings['hero_share_price_updated_' . app()->getLocale()] ?? __('public.last_updated') . ': ' . __('public.today') }}
                             </div>
@@ -169,6 +163,72 @@
 
 <!-- Content Sections -->
 <x-content-sections page="home" />
+
+
+<!-- Company Overview Section -->
+@if($company)
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                {{ $siteSettings['about_section_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'نبذة عن الشركة' : 'About Our Company') }}
+            </h2>
+            <div class="max-w-4xl mx-auto text-lg text-gray-600 leading-relaxed">
+                @if($company)
+                    {!! $company->getLocalizedAbout() !!}
+                @endif
+            </div>
+        </div>
+
+        <!-- Mission, Vision, Values -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            @if($company && $company->getLocalizedMission())
+            <div class="text-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-bullseye text-blue-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">
+                    {{ $siteSettings['mission_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'رسالتنا' : 'Our Mission') }}
+                </h3>
+                <div class="text-gray-600">
+                    {!! $company->getLocalizedMission() !!}
+                </div>
+            </div>
+            @endif
+
+            @if($company && $company->getLocalizedVision())
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-eye text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">
+                    {{ $siteSettings['vision_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'رؤيتنا' : 'Our Vision') }}
+                </h3>
+                <div class="text-gray-600">
+                    {!! $company->getLocalizedVision() !!}
+                </div>
+            </div>
+            @endif
+
+            @if($company && $company->getLocalizedValues())
+            <div class="text-center">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-heart text-purple-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">
+                    {{ $siteSettings['values_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'قيمنا' : 'Our Values') }}
+                </h3>
+                <div class="text-gray-600">
+                    {!! $company->getLocalizedValues() !!}
+                </div>
+            </div>
+            @endif
+        </div>
+    </div>
+</section>
+@endif
+
+
 
 <!-- Statistics Section -->
 <section class="stats-section py-20 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -261,68 +321,6 @@
     </div>
 </section>
 
-<!-- Company Overview Section -->
-@if($company)
-<section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">
-                {{ $siteSettings['about_section_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'نبذة عن الشركة' : 'About Our Company') }}
-            </h2>
-            <div class="max-w-4xl mx-auto text-lg text-gray-600 leading-relaxed">
-                @if($company)
-                    {!! $company->getLocalizedAbout() !!}
-                @endif
-            </div>
-        </div>
-
-        <!-- Mission, Vision, Values -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            @if($company && $company->getLocalizedMission())
-            <div class="text-center">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-bullseye text-blue-600 text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ $siteSettings['mission_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'رسالتنا' : 'Our Mission') }}
-                </h3>
-                <div class="text-gray-600">
-                    {!! $company->getLocalizedMission() !!}
-                </div>
-            </div>
-            @endif
-
-            @if($company && $company->getLocalizedVision())
-            <div class="text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-eye text-green-600 text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ $siteSettings['vision_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'رؤيتنا' : 'Our Vision') }}
-                </h3>
-                <div class="text-gray-600">
-                    {!! $company->getLocalizedVision() !!}
-                </div>
-            </div>
-            @endif
-
-            @if($company && $company->getLocalizedValues())
-            <div class="text-center">
-                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-heart text-purple-600 text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ $siteSettings['values_title_' . app()->getLocale()] ?? (app()->getLocale() === 'ar' ? 'قيمنا' : 'Our Values') }}
-                </h3>
-                <div class="text-gray-600">
-                    {!! $company->getLocalizedValues() !!}
-                </div>
-            </div>
-            @endif
-        </div>
-    </div>
-</section>
-@endif
 
 <!-- FAQ Section -->
 <section class="py-20 bg-gray-50" id="faq-section">
