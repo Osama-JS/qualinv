@@ -542,6 +542,9 @@
     </div>
 </section>
 
+<!-- Content Sections -->
+<x-content-sections page="investment-application" />
+
 <!-- Application Form -->
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -930,7 +933,7 @@
                     <!-- Share Type Field -->
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-gray-700 mb-3">
-                            {{ app()->getLocale() === 'ar' ? 'نوع السهم' : 'Share Type' }} <span class="text-red-500">*</span>
+                            {{ \App\Models\SiteSetting::get('investment_share_type_title_' . app()->getLocale(), app()->getLocale() === 'ar' ? 'نوع السهم' : 'Share Type') }} <span class="text-red-500">*</span>
                         </label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="relative">
@@ -938,14 +941,20 @@
                                        {{ old('share_type', 'regular') === 'regular' ? 'checked' : '' }}
                                        class="sr-only peer" required>
                                 <label for="share_type_regular"
-                                       class="flex items-center justify-center w-full p-4 text-gray-700 bg-white border-2 border-gray-300 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:bg-green-50 peer-checked:text-green-700 hover:bg-gray-50 transition-all duration-200">
-                                    <div class="text-center">
+                                       class="flex flex-col w-full p-4 text-gray-700 bg-white border-2 border-gray-300 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:bg-green-50 peer-checked:text-green-700 hover:bg-gray-50 transition-all duration-200">
+                                    <div class="flex items-center justify-between mb-2">
                                         <div class="font-semibold">
-                                            {{ app()->getLocale() === 'ar' ? 'سهم عادي' : 'Regular Share' }}
+                                            {{ \App\Models\SiteSetting::get('investment_regular_share_label_' . app()->getLocale(), app()->getLocale() === 'ar' ? 'السهم العادي' : 'Regular Share') }}
                                         </div>
-                                        <div class="text-sm text-gray-500 mt-1">
-                                            {{ app()->getLocale() === 'ar' ? 'سهم عادي بحقوق تصويت' : 'Regular share with voting rights' }}
+                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-coins text-green-600"></i>
                                         </div>
+                                    </div>
+                                    <div class="text-sm text-gray-500 mb-2">
+                                        {{ \App\Models\SiteSetting::get('investment_regular_share_desc_' . app()->getLocale(), app()->getLocale() === 'ar' ? 'سهم عادي بعائد ثابت وحقوق تصويت' : 'Regular share with fixed return and voting rights') }}
+                                    </div>
+                                    <div class="text-lg font-bold text-green-600">
+                                        {{ \App\Models\SiteSetting::get('share_price', '125.50') }} {{ \App\Models\SiteSetting::get('currency', 'SAR') }}
                                     </div>
                                 </label>
                             </div>
@@ -954,14 +963,20 @@
                                        {{ old('share_type') === 'redeemable' ? 'checked' : '' }}
                                        class="sr-only peer" required>
                                 <label for="share_type_redeemable"
-                                       class="flex items-center justify-center w-full p-4 text-gray-700 bg-white border-2 border-gray-300 rounded-lg cursor-pointer peer-checked:border-green-500 peer-checked:bg-green-50 peer-checked:text-green-700 hover:bg-gray-50 transition-all duration-200">
-                                    <div class="text-center">
+                                       class="flex flex-col w-full p-4 text-gray-700 bg-white border-2 border-gray-300 rounded-lg cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 transition-all duration-200">
+                                    <div class="flex items-center justify-between mb-2">
                                         <div class="font-semibold">
-                                            {{ app()->getLocale() === 'ar' ? 'سهم مسترد' : 'Redeemable Share' }}
+                                            {{ \App\Models\SiteSetting::get('investment_redeemable_share_label_' . app()->getLocale(), app()->getLocale() === 'ar' ? 'السهم المسترد' : 'Redeemable Share') }}
                                         </div>
-                                        <div class="text-sm text-gray-500 mt-1">
-                                            {{ app()->getLocale() === 'ar' ? 'سهم قابل للاسترداد' : 'Share that can be redeemed' }}
+                                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                            <i class="fas fa-sync-alt text-blue-600"></i>
                                         </div>
+                                    </div>
+                                    <div class="text-sm text-gray-500 mb-2">
+                                        {{ \App\Models\SiteSetting::get('investment_redeemable_share_desc_' . app()->getLocale(), app()->getLocale() === 'ar' ? 'سهم قابل للاسترداد بعائد متغير' : 'Redeemable share with variable return') }}
+                                    </div>
+                                    <div class="text-lg font-bold text-blue-600">
+                                        {{ \App\Models\SiteSetting::get('redeemable_share_price', '150.00') }} {{ \App\Models\SiteSetting::get('redeemable_share_currency', 'SAR') }}
                                     </div>
                                 </label>
                             </div>
@@ -1034,19 +1049,52 @@ document.addEventListener('DOMContentLoaded', function() {
     const termsCheckbox = document.getElementById('terms-checkbox');
     const messagesContainer = document.getElementById('form-messages');
 
-    // Investment Calculator
+    // Investment Calculator with Share Type Support
     const calcShares = document.getElementById('calc-shares');
     const calcTotal = document.getElementById('calc-total');
-    const sharePrice = {{ $sharePrice }};
-    const currency = '{{ $currency }}';
+    const shareTypeInputs = document.querySelectorAll('input[name="share_type"]');
 
-    if (calcShares && calcTotal) {
-        calcShares.addEventListener('input', function() {
-            const shares = parseInt(this.value) || 0;
-            const total = (shares * sharePrice).toFixed(2);
-            calcTotal.textContent = total + ' ' + currency;
-        });
+    // Share prices and currencies
+    const regularSharePrice = {{ \App\Models\SiteSetting::get('share_price', '125.50') }};
+    const regularCurrency = '{{ \App\Models\SiteSetting::get('currency', 'SAR') }}';
+    const redeemableSharePrice = {{ \App\Models\SiteSetting::get('redeemable_share_price', '150.00') }};
+    const redeemableCurrency = '{{ \App\Models\SiteSetting::get('redeemable_share_currency', 'SAR') }}';
+
+    function getCurrentSharePrice() {
+        const selectedShareType = document.querySelector('input[name="share_type"]:checked');
+        if (selectedShareType && selectedShareType.value === 'redeemable') {
+            return {
+                price: redeemableSharePrice,
+                currency: redeemableCurrency
+            };
+        }
+        return {
+            price: regularSharePrice,
+            currency: regularCurrency
+        };
     }
+
+    function updateCalculator() {
+        if (calcShares && calcTotal) {
+            const shares = parseInt(calcShares.value) || 0;
+            const shareInfo = getCurrentSharePrice();
+            const total = (shares * shareInfo.price).toFixed(2);
+            calcTotal.textContent = total + ' ' + shareInfo.currency;
+        }
+    }
+
+    // Update calculator when share count changes
+    if (calcShares && calcTotal) {
+        calcShares.addEventListener('input', updateCalculator);
+    }
+
+    // Update calculator when share type changes
+    shareTypeInputs.forEach(input => {
+        input.addEventListener('change', updateCalculator);
+    });
+
+    // Initial calculation
+    updateCalculator();
 
     // Progress Steps Update
     function updateProgressSteps(currentStep) {

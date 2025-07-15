@@ -655,6 +655,60 @@
             margin-left: 0;
             margin-right: 1rem;
         }
+
+        /* Mobile Menu Scrolling Support */
+        .mobile-menu {
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height for mobile browsers */
+        }
+
+        .mobile-menu .flex.flex-col {
+            height: 100%;
+        }
+
+        .mobile-menu .overflow-y-auto {
+            max-height: calc(100vh - 120px); /* Account for header height */
+            max-height: calc(100dvh - 120px);
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: rgba(156, 163, 175, 0.5) transparent; /* Firefox */
+        }
+
+        /* Custom scrollbar for webkit browsers */
+        .mobile-menu .overflow-y-auto::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .mobile-menu .overflow-y-auto::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .mobile-menu .overflow-y-auto::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 3px;
+        }
+
+        .mobile-menu .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(156, 163, 175, 0.7);
+        }
+
+        /* Ensure mobile menu items have proper spacing */
+        .mobile-menu .space-y-4 > * + * {
+            margin-top: 1rem;
+        }
+
+        /* Mobile menu fade in/out animation */
+        .mobile-menu.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+        }
+
+        .mobile-menu:not(.hidden) {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
     </style>
 
     @stack('styles')
@@ -763,7 +817,7 @@
 
         <!-- Mobile Navigation -->
         <div class="mobile-menu hidden md:hidden fixed inset-0 z-50 transform transition-all duration-300 ease-in-out" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
-            <div class="bg-white/95 backdrop-blur-xl shadow-2xl min-h-screen">
+            <div class="bg-white/95 backdrop-blur-xl shadow-2xl h-full flex flex-col">
                 <!-- Mobile Header -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-200/50">
                     <div class="flex items-center space-x-3">
@@ -779,8 +833,8 @@
                     </button>
                 </div>
 
-                <!-- Mobile Menu Items -->
-                <div class="px-6 py-8 space-y-4">
+                <!-- Mobile Menu Items - With Scrolling Support -->
+                <div class="flex-1 overflow-y-auto px-6 py-8 space-y-4">
                     <a href="{{ route('home') }}"
                         class="flex items-center space-x-4 p-4 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 transition-all duration-300 group {{ request()->routeIs('home') ? 'bg-gradient-to-r from-green-100 to-blue-100 text-green-700' : 'text-gray-700' }}">
                         <div

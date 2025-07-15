@@ -117,38 +117,179 @@
                     @enderror
                 </div>
 
-                <div>
-                    <label for="share_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {{ __('admin.share_price') }} <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative">
-                        <input type="number" name="share_price" id="share_price" step="0.01" min="0"
-                               value="{{ old('share_price', $settings['general']['share_price']) }}"
-                               class="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                               required>
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <span class="text-gray-500 text-sm">{{ $settings['general']['currency'] }}</span>
+                <!-- Regular Share Settings -->
+                <div class="col-span-1 lg:col-span-2 bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-100 dark:border-green-800">
+                    <h4 class="text-lg font-medium text-green-800 dark:text-green-300 mb-4">
+                        <i class="fas fa-coins mr-2"></i>{{ __('admin.regular_share_settings') }}
+                    </h4>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <label for="share_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.regular_share_price') }} <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="number" name="share_price" id="share_price" step="0.01" min="0"
+                                    value="{{ old('share_price', $settings['general']['share_price']) }}"
+                                    class="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                    required>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-gray-500 text-sm">{{ $settings['general']['currency'] }}</span>
+                                </div>
+                            </div>
+                            @error('share_price')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="currency" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.currency') }} <span class="text-red-500">*</span>
+                            </label>
+                            <select name="currency" id="currency"
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                    required>
+                                <option value="SAR" {{ old('currency', $settings['general']['currency']) == 'SAR' ? 'selected' : '' }}>SAR - {{ __('admin.saudi_riyal') }}</option>
+                                <option value="USD" {{ old('currency', $settings['general']['currency']) == 'USD' ? 'selected' : '' }}>USD - {{ __('admin.us_dollar') }}</option>
+                                <option value="EUR" {{ old('currency', $settings['general']['currency']) == 'EUR' ? 'selected' : '' }}>EUR - {{ __('admin.euro') }}</option>
+                            </select>
+                            @error('currency')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
-                    @error('share_price')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
                 </div>
 
-                <div>
-                    <label for="currency" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {{ __('admin.currency') }} <span class="text-red-500">*</span>
-                    </label>
-                    <select name="currency" id="currency"
-                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                            required>
-                        <option value="SAR" {{ old('currency', $settings['general']['currency']) == 'SAR' ? 'selected' : '' }}>SAR - {{ __('admin.saudi_riyal') }}</option>
-                        <option value="USD" {{ old('currency', $settings['general']['currency']) == 'USD' ? 'selected' : '' }}>USD - {{ __('admin.us_dollar') }}</option>
-                        <option value="EUR" {{ old('currency', $settings['general']['currency']) == 'EUR' ? 'selected' : '' }}>EUR - {{ __('admin.euro') }}</option>
-                    </select>
-                    @error('currency')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+                <!-- Redeemable Share Settings -->
+                <div class="col-span-1 lg:col-span-2 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800">
+                    <h4 class="text-lg font-medium text-blue-800 dark:text-blue-300 mb-4">
+                        <i class="fas fa-sync-alt mr-2"></i>{{ __('admin.redeemable_share_settings') }}
+                    </h4>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <label for="redeemable_share_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.redeemable_share_price') }} <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <input type="number" name="redeemable_share_price" id="redeemable_share_price" step="0.01" min="0"
+                                    value="{{ old('redeemable_share_price', $settings['general']['redeemable_share_price']) }}"
+                                    class="w-full px-3 py-2 pr-12 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                    required>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <span class="text-gray-500 text-sm">{{ $settings['general']['redeemable_share_currency'] }}</span>
+                                </div>
+                            </div>
+                            @error('redeemable_share_price')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="redeemable_share_currency" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.redeemable_share_currency') }} <span class="text-red-500">*</span>
+                            </label>
+                            <select name="redeemable_share_currency" id="redeemable_share_currency"
+                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                    required>
+                                <option value="SAR" {{ old('redeemable_share_currency', $settings['general']['redeemable_share_currency']) == 'SAR' ? 'selected' : '' }}>SAR - {{ __('admin.saudi_riyal') }}</option>
+                                <option value="USD" {{ old('redeemable_share_currency', $settings['general']['redeemable_share_currency']) == 'USD' ? 'selected' : '' }}>USD - {{ __('admin.us_dollar') }}</option>
+                                <option value="EUR" {{ old('redeemable_share_currency', $settings['general']['redeemable_share_currency']) == 'EUR' ? 'selected' : '' }}>EUR - {{ __('admin.euro') }}</option>
+                            </select>
+                            @error('redeemable_share_currency')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEO Meta Tags -->
+                <div class="col-span-1 lg:col-span-2 bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
+                    <h4 class="text-lg font-medium text-purple-800 dark:text-purple-300 mb-4">
+                        <i class="fas fa-search mr-2"></i>{{ __('admin.seo_settings') }}
+                    </h4>
+
+                    <!-- Meta Title -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="meta_title_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.meta_title_arabic') }} <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="meta_title_ar" id="meta_title_ar"
+                                value="{{ old('meta_title_ar', $settings['seo']['meta_title_ar']) }}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                required>
+                            @error('meta_title_ar')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="meta_title_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.meta_title_english') }} <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="meta_title_en" id="meta_title_en"
+                                value="{{ old('meta_title_en', $settings['seo']['meta_title_en']) }}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                required>
+                            @error('meta_title_en')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Meta Description -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="meta_description_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.meta_description_arabic') }} <span class="text-red-500">*</span>
+                            </label>
+                            <textarea name="meta_description_ar" id="meta_description_ar" rows="3"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                required>{{ old('meta_description_ar', $settings['seo']['meta_description_ar']) }}</textarea>
+                            @error('meta_description_ar')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="meta_description_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.meta_description_english') }} <span class="text-red-500">*</span>
+                            </label>
+                            <textarea name="meta_description_en" id="meta_description_en" rows="3"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                required>{{ old('meta_description_en', $settings['seo']['meta_description_en']) }}</textarea>
+                            @error('meta_description_en')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Meta Keywords -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div>
+                            <label for="meta_keywords_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.meta_keywords_arabic') }} <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="meta_keywords_ar" id="meta_keywords_ar"
+                                value="{{ old('meta_keywords_ar', $settings['seo']['meta_keywords_ar']) }}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                required>
+                            <p class="mt-1 text-xs text-gray-500">{{ __('admin.keywords_comma_separated') }}</p>
+                            @error('meta_keywords_ar')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="meta_keywords_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                {{ __('admin.meta_keywords_english') }} <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="meta_keywords_en" id="meta_keywords_en"
+                                value="{{ old('meta_keywords_en', $settings['seo']['meta_keywords_en']) }}"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
+                                required>
+                            <p class="mt-1 text-xs text-gray-500">{{ __('admin.keywords_comma_separated') }}</p>
+                            @error('meta_keywords_en')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -32,6 +32,18 @@ class SiteSettingsController extends Controller
                 'site_name_ar' => SiteSetting::get('site_name_ar', 'شركة الجودة للاستثمار'),
                 'share_price' => SiteSetting::get('share_price', 100.00),
                 'currency' => SiteSetting::get('currency', 'SAR'),
+                'redeemable_share_price' => SiteSetting::get('redeemable_share_price', 150.00),
+                'redeemable_share_currency' => SiteSetting::get('redeemable_share_currency', 'SAR'),
+            ],
+
+            // SEO Meta Tags
+            'seo' => [
+                'meta_title_ar' => SiteSetting::get('meta_title_ar', 'شركة الجودة للاستثمار'),
+                'meta_title_en' => SiteSetting::get('meta_title_en', 'Quality Investment Company'),
+                'meta_description_ar' => SiteSetting::get('meta_description_ar', 'شركة الجودة للاستثمار - شريكك الموثوق في عالم الاستثمار'),
+                'meta_description_en' => SiteSetting::get('meta_description_en', 'Quality Investment Company - Your trusted partner in investment'),
+                'meta_keywords_ar' => SiteSetting::get('meta_keywords_ar', 'استثمار، شركة استثمار، أسهم'),
+                'meta_keywords_en' => SiteSetting::get('meta_keywords_en', 'investment, investment company, shares'),
             ],
 
             // Hero Section Settings
@@ -301,6 +313,16 @@ class SiteSettingsController extends Controller
             'site_name_ar' => ['type' => 'text', 'group' => 'general', 'public' => true],
             'share_price' => ['type' => 'number', 'group' => 'general', 'public' => true],
             'currency' => ['type' => 'text', 'group' => 'general', 'public' => true],
+            'redeemable_share_price' => ['type' => 'number', 'group' => 'general', 'public' => true],
+            'redeemable_share_currency' => ['type' => 'text', 'group' => 'general', 'public' => true],
+
+            // SEO Meta Tags
+            'meta_title_ar' => ['type' => 'text', 'group' => 'seo', 'public' => true],
+            'meta_title_en' => ['type' => 'text', 'group' => 'seo', 'public' => true],
+            'meta_description_ar' => ['type' => 'textarea', 'group' => 'seo', 'public' => true],
+            'meta_description_en' => ['type' => 'textarea', 'group' => 'seo', 'public' => true],
+            'meta_keywords_ar' => ['type' => 'text', 'group' => 'seo', 'public' => true],
+            'meta_keywords_en' => ['type' => 'text', 'group' => 'seo', 'public' => true],
 
             // Hero Section
             'hero_title_ar' => ['type' => 'text', 'group' => 'content', 'public' => true],

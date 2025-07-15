@@ -188,11 +188,20 @@
                         <p class="text-sm font-semibold text-gray-900 dark:text-white mt-1">{{ $investmentApplication->country_of_residence }}</p>
                     </div>
 
-                    <div>
-                        <label class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('admin.number_of_shares') }}</label>
-                        <p class="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">
-                            {{ number_format($investmentApplication->number_of_shares) }} {{ __('admin.shares') }}
-                        </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('admin.number_of_shares') }}</label>
+                            <p class="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">
+                                {{ number_format($investmentApplication->number_of_shares) }} {{ __('admin.shares') }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('admin.share_type') }}</label>
+                            <p class="text-2xl font-bold mt-1 {{ $investmentApplication->share_type === 'redeemable' ? 'text-indigo-600 dark:text-indigo-400' : 'text-green-600 dark:text-green-400' }}">
+                                {{ $investmentApplication->getShareTypeLabel() }}
+                            </p>
+                        </div>
                     </div>
 
                     <div>

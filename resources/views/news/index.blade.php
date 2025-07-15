@@ -35,6 +35,9 @@
     </div>
 </section>
 
+<!-- Content Sections -->
+<x-content-sections page="news" />
+
 <!-- Featured Article -->
 @if($featuredArticle)
 <section class="py-20 bg-white">

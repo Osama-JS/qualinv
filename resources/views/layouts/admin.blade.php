@@ -233,6 +233,19 @@
                     @endif
                 </a>
 
+
+
+                <!-- Content Sections -->
+                <a href="{{ route('admin.content-sections.index') }}" class="group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.content-sections.*') ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg transform scale-105' : 'text-gray-300 hover:bg-gray-700/50 hover:text-white hover:transform hover:scale-105' }}">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-lg {{ request()->routeIs('admin.content-sections.*') ? 'bg-white/20' : 'bg-gray-700 group-hover:bg-gray-600' }} mr-3 transition-colors">
+                        <i class="fas fa-layer-group text-sm"></i>
+                    </div>
+                    {{ __('admin.content_sections') }}
+                    @if(request()->routeIs('admin.content-sections.*'))
+                        <div class="ml-auto w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                    @endif
+                </a>
+
                 <!-- Divider -->
                 <div class="my-4 border-t border-gray-700/50"></div>
 
@@ -575,6 +588,9 @@
             }
         });
     </script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Additional Scripts -->
     @stack('scripts')

@@ -173,6 +173,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin', 'update.las
     Route::post('faqs/{faq}/toggle-status', [App\Http\Controllers\Admin\FaqController::class, 'toggleStatus'])->name('faqs.toggle-status');
     Route::post('faqs/bulk-action', [App\Http\Controllers\Admin\FaqController::class, 'bulkAction'])->name('faqs.bulk-action');
     Route::post('faqs/update-order', [App\Http\Controllers\Admin\FaqController::class, 'updateOrder'])->name('faqs.update-order');
+
+    // Content Sections routes
+    Route::resource('content-sections', App\Http\Controllers\Admin\ContentSectionController::class);
+    Route::post('content-sections/{contentSection}/toggle-status', [App\Http\Controllers\Admin\ContentSectionController::class, 'toggleStatus'])->name('content-sections.toggle-status');
+    Route::post('content-sections/update-order', [App\Http\Controllers\Admin\ContentSectionController::class, 'updateOrder'])->name('content-sections.update-order');
+    Route::post('content-sections/bulk-action', [App\Http\Controllers\Admin\ContentSectionController::class, 'bulkAction'])->name('content-sections.bulk-action');
 });
 
 // Redirect /home to admin dashboard for authenticated users

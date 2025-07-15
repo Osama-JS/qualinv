@@ -46,6 +46,7 @@ class InvestmentApplicationController extends Controller
             $application->mobile_number = $request->mobile_number;
             $application->email = $request->email;
             $application->number_of_shares = $request->number_of_shares;
+            $application->share_type = $request->share_type ?? InvestmentApplication::SHARE_TYPE_REGULAR;
             $application->status = InvestmentApplication::STATUS_PENDING;
             $application->is_read = false;
             $application->ip_address = $request->ip();

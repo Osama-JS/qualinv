@@ -121,19 +121,40 @@
             </div>
 
             <div class="animate-slide-in-right">
-                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-                    <h3 class="text-2xl font-bold mb-6">
-                        {{ $siteSettings['hero_share_price_title_' . app()->getLocale()] ?? __('public.current_share_price') }}
-                    </h3>
-                    <div class="text-center">
-                        <div class="text-5xl font-bold mb-2">{{ $siteSettings['share_price'] ?? '125.50' }}</div>
-                        <div class="text-lg text-gray-200">{{ $siteSettings['currency'] ?? 'SAR' }}</div>
-                        <div class="mt-4 text-green-300 flex items-center justify-center">
-                            <i class="fas fa-arrow-up mr-2"></i>
-                            <span>+2.5% {{ __('public.today') }}</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Regular Share Card -->
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+                        <h3 class="text-xl font-bold mb-4 text-center">
+                            {{ $siteSettings['hero_regular_share_title_' . app()->getLocale()] ?? ($siteSettings['hero_share_price_title_' . app()->getLocale()] ?? __('public.regular_share_price')) }}
+                        </h3>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold mb-2">{{ $siteSettings['share_price'] ?? '125.50' }}</div>
+                            <div class="text-lg text-gray-200">{{ $siteSettings['currency'] ?? 'SAR' }}</div>
+                            <div class="mt-3 text-green-300 flex items-center justify-center">
+                                <i class="fas fa-arrow-up mr-2"></i>
+                                <span>+2.5% {{ $siteSettings['hero_share_price_change_' . app()->getLocale()] ?? __('public.today') }}</span>
+                            </div>
+                            <div class="mt-3 text-sm text-gray-300">
+                                {{ $siteSettings['hero_share_price_updated_' . app()->getLocale()] ?? __('public.last_updated') . ': ' . __('public.today') }}
+                            </div>
                         </div>
-                        <div class="mt-4 text-sm text-gray-300">
-                            {{ __('public.last_updated') }}: {{ __('public.today') }}
+                    </div>
+
+                    <!-- Redeemable Share Card -->
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+                        <h3 class="text-xl font-bold mb-4 text-center">
+                            {{ $siteSettings['hero_redeemable_share_title_' . app()->getLocale()] ?? __('public.redeemable_share_price') }}
+                        </h3>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold mb-2">{{ $siteSettings['redeemable_share_price'] ?? '150.00' }}</div>
+                            <div class="text-lg text-gray-200">{{ $siteSettings['redeemable_share_currency'] ?? 'SAR' }}</div>
+                            <div class="mt-3 text-blue-300 flex items-center justify-center">
+                                <i class="fas fa-sync-alt mr-2"></i>
+                                <span>{{ app()->getLocale() === 'ar' ? 'قابل للاسترداد' : 'Redeemable' }}</span>
+                            </div>
+                            <div class="mt-3 text-sm text-gray-300">
+                                {{ $siteSettings['hero_share_price_updated_' . app()->getLocale()] ?? __('public.last_updated') . ': ' . __('public.today') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -145,6 +166,9 @@
     <div class="absolute top-20 left-10 w-20 h-20 bg-white/10 rounded-full animate-pulse"></div>
     <div class="absolute bottom-20 right-10 w-32 h-32 bg-white/5 rounded-full animate-pulse"></div>
 </section>
+
+<!-- Content Sections -->
+<x-content-sections page="home" />
 
 <!-- Statistics Section -->
 <section class="stats-section py-20 bg-gradient-to-br from-gray-50 to-blue-50">

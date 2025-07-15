@@ -323,6 +323,9 @@
     </div>
 </section>
 
+<!-- Content Sections -->
+<x-content-sections page="about" />
+
 <!-- Company Overview -->
 <section class="about-page-section py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

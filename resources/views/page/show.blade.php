@@ -32,7 +32,7 @@
 
             @if($page->getLocalizedDescription())
             <p class="text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto">
-                {{ $page->getLocalizedDescription() }}
+                {!! $page->getLocalizedDescription() !!}
             </p>
             @endif
         </div>
@@ -80,7 +80,7 @@
 
                     @if($page->getLocalizedDescription())
                     <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
-                        {{ $page->getLocalizedDescription() }}
+                        {!! $page->getLocalizedDescription() !!}
                     </p>
                     @endif
 
