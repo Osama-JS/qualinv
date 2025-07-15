@@ -161,8 +161,7 @@
     <div class="absolute bottom-20 right-10 w-32 h-32 bg-white/5 rounded-full animate-pulse"></div>
 </section>
 
-<!-- Content Sections -->
-<x-content-sections page="home" />
+
 
 
 <!-- Company Overview Section -->
@@ -228,7 +227,8 @@
 </section>
 @endif
 
-
+<!-- Content Sections -->
+<x-content-sections page="home" />
 
 <!-- Statistics Section -->
 <section class="stats-section py-20 bg-gradient-to-br from-gray-50 to-blue-50">

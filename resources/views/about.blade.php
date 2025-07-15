@@ -323,8 +323,7 @@
     </div>
 </section>
 
-<!-- Content Sections -->
-<x-content-sections page="about" />
+
 
 <!-- Company Overview -->
 <section class="about-page-section py-20 bg-white">
@@ -520,6 +519,9 @@
         </div>
     </div>
 </section>
+
+<!-- Content Sections -->
+<x-content-sections page="about" />
 
 <!-- Board of Directors -->
 @if($boardMembers->count() > 0)
