@@ -122,8 +122,10 @@ class HomeController extends Controller
             ->latest('published_at')
             ->take(3)
             ->get();
+                    $company = Company::first();
 
-        return view('news', compact('articles', 'featuredArticles'));
+
+        return view('news.index', compact('articles', 'featuredArticles','company'));
     }
 
     public function newsShow($slug)
