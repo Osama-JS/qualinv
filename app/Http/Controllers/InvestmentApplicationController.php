@@ -125,7 +125,7 @@ class InvestmentApplicationController extends Controller
         try {
             // Get company information for email recipient
             $company = Company::first();
-            $recipientEmail = $company->contact_email ?? config('mail.from.address');
+            $recipientEmail = $company->email ?? config('mail.from.address');
 
             // Send email to admin
             Mail::to($recipientEmail)->send(new InvestmentApplicationMail($application));

@@ -7,6 +7,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Address;
+
 use Illuminate\Queue\SerializesModels;
 
 class ContactMessageMail extends Mailable
@@ -28,33 +30,33 @@ class ContactMessageMail extends Mailable
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
-    {
-        $subject = app()->getLocale() === 'ar'
-            ? 'رسالة جديدة من موقع الشركة - ' . $this->contactData['subject']
-            : 'New Contact Message - ' . $this->contactData['subject'];
+   public function envelope(): Envelope
+{
+    $subject = app()->getLocale() === 'ar'
+        ? 'رسالة جديدة من موقع الشركة - ' . $this->contactData['subject']
+        : 'New Contact Message - ' . $this->contactData['subject'];
 
-        // Clean and format the name for RFC 2822 compliance
-        $cleanName = $this->cleanEmailName($this->contactData['name']);
+    // Clean and format the name
+    $cleanName = $this->cleanEmailName($this->contactData['name']);
 
-        // Create envelope with safe replyTo
-        try {
-            return new Envelope(
-                subject: $subject,
-                replyTo: [
-                    $this->contactData['email'] => $cleanName
-                ]
-            );
-        } catch (\Exception $e) {
-            // Fallback: create envelope without name in replyTo
-            return new Envelope(
-                subject: $subject,
-                replyTo: [
-                    $this->contactData['email']
-                ]
-            );
-        }
+    try {
+        return new Envelope(
+            subject: $subject,
+            replyTo: [
+                new Address($this->contactData['email'], $cleanName)
+            ]
+        );
+    } catch (\Exception $e) {
+        // Fallback without name
+        return new Envelope(
+            subject: $subject,
+            replyTo: [
+                new Address($this->contactData['email'])
+            ]
+        );
     }
+}
+
 
     /**
      * Clean name for RFC 2822 compliance

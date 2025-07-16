@@ -111,7 +111,7 @@ class ContactController extends Controller
 
             // Get company information for email recipient
             $company = Company::first();
-            $recipientEmail = $company->contact_email ?? config('mail.from.address');
+            $recipientEmail = $company->email ?? config('mail.from.address');
 
             // Validate recipient email
             if (!filter_var($recipientEmail, FILTER_VALIDATE_EMAIL)) {

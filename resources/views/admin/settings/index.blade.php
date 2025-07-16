@@ -201,96 +201,7 @@
                     </div>
                 </div>
 
-                <!-- SEO Meta Tags -->
-                <div class="col-span-1 lg:col-span-2 bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
-                    <h4 class="text-lg font-medium text-purple-800 dark:text-purple-300 mb-4">
-                        <i class="fas fa-search mr-2"></i>{{ __('admin.seo_settings') }}
-                    </h4>
 
-                    <!-- Meta Title -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label for="meta_title_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ __('admin.meta_title_arabic') }} <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="meta_title_ar" id="meta_title_ar"
-                                value="{{ old('meta_title_ar', $settings['seo']['meta_title_ar']) }}"
-                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                                required>
-                            @error('meta_title_ar')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="meta_title_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ __('admin.meta_title_english') }} <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="meta_title_en" id="meta_title_en"
-                                value="{{ old('meta_title_en', $settings['seo']['meta_title_en']) }}"
-                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                                required>
-                            @error('meta_title_en')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- Meta Description -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                        <div>
-                            <label for="meta_description_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ __('admin.meta_description_arabic') }} <span class="text-red-500">*</span>
-                            </label>
-                            <textarea name="meta_description_ar" id="meta_description_ar" rows="3"
-                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                                required>{{ old('meta_description_ar', $settings['seo']['meta_description_ar']) }}</textarea>
-                            @error('meta_description_ar')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="meta_description_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ __('admin.meta_description_english') }} <span class="text-red-500">*</span>
-                            </label>
-                            <textarea name="meta_description_en" id="meta_description_en" rows="3"
-                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                                required>{{ old('meta_description_en', $settings['seo']['meta_description_en']) }}</textarea>
-                            @error('meta_description_en')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <!-- Meta Keywords -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div>
-                            <label for="meta_keywords_ar" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ __('admin.meta_keywords_arabic') }} <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="meta_keywords_ar" id="meta_keywords_ar"
-                                value="{{ old('meta_keywords_ar', $settings['seo']['meta_keywords_ar']) }}"
-                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                                required>
-                            <p class="mt-1 text-xs text-gray-500">{{ __('admin.keywords_comma_separated') }}</p>
-                            @error('meta_keywords_ar')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="meta_keywords_en" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ __('admin.meta_keywords_english') }} <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="meta_keywords_en" id="meta_keywords_en"
-                                value="{{ old('meta_keywords_en', $settings['seo']['meta_keywords_en']) }}"
-                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                                required>
-                            <p class="mt-1 text-xs text-gray-500">{{ __('admin.keywords_comma_separated') }}</p>
-                            @error('meta_keywords_en')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -616,61 +527,7 @@
         </div>
     </div>
 
-    <!-- Investment Settings -->
-    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
-        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 flex items-center">
-                <i class="fas fa-chart-pie mr-3 text-blue-500"></i>
-                {{ app()->getLocale() === 'ar' ? 'إعدادات الاستثمار' : 'Investment Settings' }}
-            </h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                {{ app()->getLocale() === 'ar' ? 'إعدادات سعر السهم والعملة' : 'Configure share price and currency settings' }}
-            </p>
-        </div>
-        <div class="p-6 space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Share Price -->
-                <div>
-                    <label for="share_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-money-bill text-blue-500 mr-2"></i>{{ app()->getLocale() === 'ar' ? 'سعر السهم' : 'Share Price' }}
-                    </label>
-                    <input type="number"
-                           id="share_price"
-                           name="share_price"
-                           step="0.01"
-                           min="0"
-                           value="{{ old('share_price', $settings['investment']['share_price'] ?? '125.50') }}"
-                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100"
-                           placeholder="{{ app()->getLocale() === 'ar' ? 'مثال: 125.50' : 'Example: 125.50' }}">
-                    @error('share_price')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
 
-                <!-- Currency -->
-                <div>
-                    <label for="currency" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        <i class="fas fa-coins text-blue-500 mr-2"></i>{{ app()->getLocale() === 'ar' ? 'العملة' : 'Currency' }}
-                    </label>
-                    <select id="currency" name="currency"
-                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-gray-100">
-                        <option value="SAR" {{ old('currency', $settings['investment']['share_price'] ?? 'SAR') === 'SAR' ? 'selected' : '' }}>
-                            {{ app()->getLocale() === 'ar' ? 'ريال سعودي (SAR)' : 'Saudi Riyal (SAR)' }}
-                        </option>
-                        <option value="USD" {{ old('currency', $settings['investment']['currency'] ?? 'SAR') === 'USD' ? 'selected' : '' }}>
-                            {{ app()->getLocale() === 'ar' ? 'دولار أمريكي (USD)' : 'US Dollar (USD)' }}
-                        </option>
-                        <option value="EUR" {{ old('currency', $settings['investment']['currency'] ?? 'SAR') === 'EUR' ? 'selected' : '' }}>
-                            {{ app()->getLocale() === 'ar' ? 'يورو (EUR)' : 'Euro (EUR)' }}
-                        </option>
-                    </select>
-                    @error('currency')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Hero Section Settings -->
     <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg">
